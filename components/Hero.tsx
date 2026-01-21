@@ -14,9 +14,9 @@ export default function Hero() {
   const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 30 })
   const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 30 })
 
-  // Background layer - subtle movement
-  const bgX = useTransform(smoothMouseX, [-1, 1], [15, -15])
-  const bgY = useTransform(smoothMouseY, [-1, 1], [10, -10])
+  // Background layer - inverted movement (moves opposite to mouse)
+  const bgX = useTransform(smoothMouseX, [-1, 1], [-15, 15])
+  const bgY = useTransform(smoothMouseY, [-1, 1], [-10, 10])
 
   // Foreground (man) layer - more movement
   const fgX = useTransform(smoothMouseX, [-1, 1], [30, -30])
@@ -46,12 +46,13 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background layer - parallax */}
+      {/* Background layer - parallax, inverted direction */}
       <motion.div
         className="absolute inset-0 z-0"
         style={{
           x: isMobile ? 0 : bgX,
           y: isMobile ? 0 : bgY,
+          transformOrigin: 'center center',
         }}
       >
         <Image
@@ -59,27 +60,27 @@ export default function Hero() {
           alt=""
           fill
           priority
-          className="object-cover opacity-70 scale-110"
+          className="object-cover opacity-70 scale-105"
         />
       </motion.div>
 
       {/* Foreground (man) layer - parallax, centered pivot */}
       <motion.div
-        className="absolute inset-0 z-0 flex items-center justify-center"
+        className="absolute inset-0 z-0"
         style={{
           x: isMobile ? 0 : fgX,
           y: isMobile ? 0 : fgY,
+          transformOrigin: 'center center',
         }}
       >
-        <div className="relative w-full h-full">
-          <Image
-            src="/media/floatingman_fg.png"
-            alt=""
-            fill
-            priority
-            className="object-cover opacity-70 scale-110"
-          />
-        </div>
+        <Image
+          src="/media/floatingman_fg.png"
+          alt=""
+          fill
+          priority
+          className="object-cover opacity-70 scale-110"
+          style={{ objectPosition: 'center center' }}
+        />
       </motion.div>
 
       {/* Gradient overlays - static, above parallax layers */}
