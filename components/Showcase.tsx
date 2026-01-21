@@ -10,11 +10,11 @@ function seededRandom(seed: number) {
   return x - Math.floor(x)
 }
 
-// Generate random rotation between 1 and 45 degrees (positive or negative)
+// Generate random rotation between 0 and 5 degrees (positive or negative)
 function generateTileRotations(count: number) {
   return Array.from({ length: count }, (_, i) => ({
-    rotateX: (seededRandom(i * 7 + 1) * 44 + 1) * (seededRandom(i * 13) > 0.5 ? 1 : -1),
-    rotateY: (seededRandom(i * 11 + 2) * 44 + 1) * (seededRandom(i * 17) > 0.5 ? 1 : -1),
+    rotateX: (seededRandom(i * 7 + 1) * 5) * (seededRandom(i * 13) > 0.5 ? 1 : -1),
+    rotateY: (seededRandom(i * 11 + 2) * 5) * (seededRandom(i * 17) > 0.5 ? 1 : -1),
   }))
 }
 
