@@ -488,6 +488,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: anotherIsHovered ? -60 : 0,
                       zIndex: isHovered ? 10 : 1,
+                      opacity: anotherIsHovered ? 0.75 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -558,6 +559,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: anotherIsHovered ? -60 : 0,
                       zIndex: isHovered ? 10 : 1,
+                      opacity: anotherIsHovered ? 0.75 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -597,22 +599,6 @@ export default function Showcase() {
                 )
               })}
 
-              {/* More to come placeholder */}
-              <motion.div
-                variants={staggerItem}
-                className="relative aspect-video overflow-hidden bg-cinema-card flex items-center justify-center"
-                style={{ transformStyle: 'preserve-3d' }}
-                animate={{
-                  rotateX: 0,
-                  rotateY: 0,
-                  z: hoveredIndex !== null ? -60 : 0,
-                }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-              >
-                <span className="text-lg md:text-xl lg:text-2xl tracking-widest uppercase font-bold text-cinema-gold">
-                  MORE TO COME
-                </span>
-              </motion.div>
             </motion.div>
           </motion.div>
         </div>
