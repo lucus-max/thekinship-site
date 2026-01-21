@@ -43,7 +43,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ ...spring, delay: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-serif text-white uppercase"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[10rem] font-serif text-white uppercase"
             style={{ letterSpacing: '0.10em' }}
           >
             THE KI<span style={{ letterSpacing: '0.06em' }}>N</span><span style={{ letterSpacing: '0.07em' }}>S</span>HIP
@@ -74,7 +74,7 @@ export default function Hero() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={spring}
-              className="group px-10 py-4 border border-white/10 bg-cinema-gold text-cinema-black text-sm tracking-widest uppercase font-bold hover:bg-transparent hover:text-cinema-gold transition-colors duration-300"
+              className="group px-6 py-2.5 border border-white/10 bg-cinema-gold text-cinema-black text-sm tracking-widest uppercase font-bold hover:bg-transparent hover:text-cinema-gold transition-colors duration-300"
             >
               View Work
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
@@ -84,7 +84,7 @@ export default function Hero() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={spring}
-              className="px-10 py-4 border border-white/10 bg-transparent text-white text-sm tracking-widest uppercase font-bold hover:bg-cinema-card transition-colors duration-300"
+              className="px-6 py-2.5 border border-white/10 bg-transparent text-white text-sm tracking-widest uppercase font-bold hover:bg-cinema-card transition-colors duration-300"
             >
               Get In Touch
             </motion.a>

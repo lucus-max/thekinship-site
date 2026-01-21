@@ -65,7 +65,7 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
-            {['Work', 'Services', 'About'].map((item) => (
+            {['Services', 'Work', 'About'].map((item) => (
               <Link
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -119,18 +119,18 @@ export default function Navigation() {
               className="flex flex-col items-center justify-center h-full space-y-8 pb-20"
             >
               <Link
-                href="#work"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl tracking-widest uppercase text-cinema-gold font-bold hover:text-white transition-colors duration-300"
-              >
-                View The Work
-              </Link>
-              <Link
                 href="#services"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-xl tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
               >
                 Services
+              </Link>
+              <Link
+                href="#work"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-2xl tracking-widest uppercase text-cinema-gold font-bold hover:text-white transition-colors duration-300"
+              >
+                View The Work
               </Link>
               <Link
                 href="#about"
