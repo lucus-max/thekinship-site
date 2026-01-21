@@ -486,7 +486,7 @@ export default function Showcase() {
                     animate={{
                       rotateX: isMobile ? 0 : (isHovered ? 0 : rotation.rotateX),
                       rotateY: isMobile ? 0 : (isHovered ? 0 : rotation.rotateY),
-                      z: anotherIsHovered ? -200 : 0,
+                      z: anotherIsHovered ? -60 : 0,
                       zIndex: isHovered ? 10 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
@@ -556,7 +556,7 @@ export default function Showcase() {
                     animate={{
                       rotateX: isMobile ? 0 : (isHovered ? 0 : rotation.rotateX),
                       rotateY: isMobile ? 0 : (isHovered ? 0 : rotation.rotateY),
-                      z: anotherIsHovered ? -200 : 0,
+                      z: anotherIsHovered ? -60 : 0,
                       zIndex: isHovered ? 10 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
@@ -605,7 +605,7 @@ export default function Showcase() {
                 animate={{
                   rotateX: isMobile ? 0 : tileRotations[projects.length].rotateX,
                   rotateY: isMobile ? 0 : tileRotations[projects.length].rotateY,
-                  z: hoveredIndex !== null ? -200 : 0,
+                  z: hoveredIndex !== null ? -60 : 0,
                 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
               >
