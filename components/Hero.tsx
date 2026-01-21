@@ -1,22 +1,89 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { spring, fadeUpBlur, clipReveal } from '@/lib/motion'
 
 export default function Hero() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Mouse tracking for parallax
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 30 })
+  const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 30 })
+
+  // Background layer - subtle movement
+  const bgX = useTransform(smoothMouseX, [-1, 1], [15, -15])
+  const bgY = useTransform(smoothMouseY, [-1, 1], [10, -10])
+
+  // Foreground (man) layer - more movement
+  const fgX = useTransform(smoothMouseX, [-1, 1], [30, -30])
+  const fgY = useTransform(smoothMouseY, [-1, 1], [20, -20])
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalize to -1 to 1, centered on screen center
+      mouseX.set((e.clientX / window.innerWidth) * 2 - 1)
+      mouseY.set((e.clientY / window.innerHeight) * 2 - 1)
+    }
+
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove)
+      return () => window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [isMobile, mouseX, mouseY])
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image with bottom gradient blend - below constellation */}
-      <div className="absolute inset-0 z-0">
+      {/* Background layer - parallax */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{
+          x: isMobile ? 0 : bgX,
+          y: isMobile ? 0 : bgY,
+        }}
+      >
         <Image
-          src="/media/floatingman.jpg"
+          src="/media/floatingman_bg.png"
           alt=""
           fill
           priority
-          className="object-cover opacity-70"
+          className="object-cover opacity-70 scale-110"
         />
-        {/* Deep gradient blend at bottom - 75% height */}
+      </motion.div>
+
+      {/* Foreground (man) layer - parallax, centered pivot */}
+      <motion.div
+        className="absolute inset-0 z-0 flex items-center justify-center"
+        style={{
+          x: isMobile ? 0 : fgX,
+          y: isMobile ? 0 : fgY,
+        }}
+      >
+        <div className="relative w-full h-full">
+          <Image
+            src="/media/floatingman_fg.png"
+            alt=""
+            fill
+            priority
+            className="object-cover opacity-70 scale-110"
+          />
+        </div>
+      </motion.div>
+
+      {/* Gradient overlay - static, above parallax layers */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
