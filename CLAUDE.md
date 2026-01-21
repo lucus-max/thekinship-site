@@ -57,7 +57,8 @@ thekinship-site/
 │   ├── media/            # Thumbnails, images
 │   └── video/            # Local video copies (not deployed)
 ├── elements/             # Source assets (not deployed)
-└── tailwind.config.ts    # Custom colors
+├── tailwind.config.ts    # Custom colors
+└── next.config.js        # Next.js config (remotePatterns for images)
 ```
 
 ## 5. How to Update the Site
@@ -120,10 +121,12 @@ thekinship-site/
   - Desktop: 4 columns
   - Tablet: 3 columns
   - Mobile: 2 columns
+- **Hover animation:** Tiles scale up 15% with Framer Motion (0.7s ease-out), z-index boost
 - **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
 - **Mobile:** Title overlays bottom of each thumbnail
 - **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
 - **Performance:** Preloads video on hover
+- **"MORE TO COME":** Final grid slot with centered gold text placeholder
 
 ### ParallaxOverlay.tsx
 - 3D constellation sphere rendered on Canvas
