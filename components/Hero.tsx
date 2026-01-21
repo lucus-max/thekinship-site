@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image with bottom gradient blend - below constellation */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 -z-10">
         <Image
           src="/media/floatingman.jpg"
           alt=""
@@ -43,8 +43,8 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ ...spring, delay: 0.2 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif text-white uppercase"
-            style={{ letterSpacing: '0.4em' }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-serif text-white uppercase"
+            style={{ letterSpacing: '0.2em' }}
           >
             THE KINSHIP
           </motion.h1>
