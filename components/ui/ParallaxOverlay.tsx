@@ -226,7 +226,7 @@ export default function ParallaxOverlay() {
   }, [])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
       <canvas
         ref={canvasRef}
         className="absolute inset-0"
