@@ -407,7 +407,15 @@ function ProjectCard({ project, index, onPlayVideo }: { project: typeof projects
         className="relative z-20 aspect-[16/9] overflow-hidden border border-white/10 bg-cinema-card cursor-none"
         onClick={() => onPlayVideo(project.video)}
         onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovering(true)}
+        onMouseEnter={() => {
+          setIsHovering(true)
+          // Preload video on hover
+          const link = document.createElement('link')
+          link.rel = 'preload'
+          link.as = 'video'
+          link.href = project.video
+          document.head.appendChild(link)
+        }}
         onMouseLeave={() => setIsHovering(false)}
       >
         {/* Shimmer placeholder effect */}
