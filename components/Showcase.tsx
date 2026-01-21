@@ -400,22 +400,22 @@ export default function Showcase() {
             animate={isInView ? 'visible' : 'hidden'}
             className="mb-12"
           >
-            <div className="flex items-center gap-6 mb-6">
-              <div className="w-12 h-px bg-cinema-gold" />
+            <div className="flex flex-col items-center mb-6">
+              <div className="w-12 h-px bg-cinema-gold mb-6" />
             </div>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white max-w-4xl leading-tight">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white leading-tight text-center">
               FEATURED WORK
             </h2>
           </motion.div>
         </div>
 
-        {/* First 3 featured videos - full width */}
+        {/* First 3 featured videos - 3 per row */}
         <motion.div
           ref={gridRef}
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="flex flex-col"
+          className="grid grid-cols-1 md:grid-cols-3"
           onMouseMove={handleMouseMove}
         >
           {projects.slice(0, 3).map((project, index) => (
@@ -424,7 +424,7 @@ export default function Showcase() {
               variants={staggerItem}
               className="relative aspect-video cursor-pointer overflow-hidden group"
               style={{ zIndex: 1 }}
-              whileHover={{ scale: 1.02, zIndex: 10 }}
+              whileHover={{ scale: 1.15, zIndex: 10 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
               onClick={() => setActiveVideo(project.video)}
               onMouseEnter={() => {

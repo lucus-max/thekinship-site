@@ -89,12 +89,11 @@ export default function Services() {
           animate={isInView ? 'visible' : 'hidden'}
           className="mb-20"
         >
-          <div className="flex items-center gap-6 mb-6">
-            <div className="w-12 h-px bg-cinema-gold" />
-            <span className="text-xs tracking-widest uppercase text-cinema-gold">Services</span>
+          <div className="flex flex-col items-center mb-6">
+            <div className="w-12 h-px bg-cinema-gold mb-6" />
           </div>
           {/* Header: tracking-wide, uppercase, bold */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white max-w-4xl leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white leading-tight text-center">
             <span className="text-cinema-gold">WHAT I DO</span>
           </h2>
         </motion.div>
