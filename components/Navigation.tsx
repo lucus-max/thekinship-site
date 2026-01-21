@@ -101,52 +101,47 @@ export default function Navigation() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-20 bg-cinema-black/95 backdrop-blur-lg z-40 md:hidden"
+            initial={{ opacity: 0, scale: 0.95, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.95, x: 20 }}
+            transition={{ duration: 0.2 }}
+            style={{ transformOrigin: 'top right' }}
+            className="absolute top-20 right-6 bg-cinema-black/70 backdrop-blur-lg border border-white/10 z-40 md:hidden"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="flex flex-col items-center justify-center h-full space-y-8 pb-20"
-            >
+            <div className="flex flex-col py-4 px-6 space-y-4">
               <Link
                 href="#services"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-xl tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
+                className="text-sm tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
               >
                 Services
               </Link>
               <Link
                 href="#work"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl tracking-widest uppercase text-cinema-gold font-bold hover:text-white transition-colors duration-300"
+                className="text-sm tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
               >
-                View The Work
+                Work
               </Link>
               <Link
                 href="#about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-xl tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
+                className="text-sm tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
               >
                 About
               </Link>
               <Link
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mt-4 px-8 py-3 border border-white/10 bg-cinema-gold text-cinema-black text-lg tracking-widest uppercase font-bold hover:bg-transparent hover:text-cinema-gold transition-all duration-300"
+                className="mt-2 px-6 py-2.5 border border-white/10 bg-cinema-card/50 backdrop-blur-sm text-cinema-gold text-sm tracking-widest uppercase hover:bg-cinema-gold hover:text-cinema-black transition-all duration-300 text-center"
               >
                 Contact
               </Link>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

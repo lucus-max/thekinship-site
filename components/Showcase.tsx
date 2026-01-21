@@ -456,7 +456,6 @@ export default function Showcase() {
             style={{
               rotateX: isMobile ? 0 : rotateX,
               rotateY: isMobile ? 0 : rotateY,
-              scale: isMobile ? 1 : 0.95,
               transformStyle: 'preserve-3d',
             }}
             transition={{ type: 'spring', stiffness: 50, damping: 20 }}
@@ -486,9 +485,9 @@ export default function Showcase() {
                     animate={{
                       rotateX: 0,
                       rotateY: 0,
-                      z: anotherIsHovered ? -60 : 0,
+                      z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: anotherIsHovered ? 0.75 : 1,
+                      opacity: anotherIsHovered ? 0.5 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -557,9 +556,9 @@ export default function Showcase() {
                     animate={{
                       rotateX: 0,
                       rotateY: 0,
-                      z: anotherIsHovered ? -60 : 0,
+                      z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: anotherIsHovered ? 0.75 : 1,
+                      opacity: anotherIsHovered ? 0.5 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
