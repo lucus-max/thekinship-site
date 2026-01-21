@@ -449,10 +449,16 @@ export default function Showcase() {
               <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               {isMobile && (
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-cinema-black/90 to-transparent">
-                  <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wide">
+                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
+                  <h3 className="text-xs sm:text-sm font-bold text-cinema-gold uppercase tracking-wide">
                     {project.title}
                   </h3>
+                  <p className="text-[10px] sm:text-xs text-white/70 mt-0.5">
+                    {project.subtitle}
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-white/50 mt-0.5 line-clamp-2">
+                    {project.description}
+                  </p>
                 </div>
               )}
             </motion.div>
@@ -498,10 +504,13 @@ export default function Showcase() {
               <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               {isMobile && (
-                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/90 to-transparent">
-                  <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate">
+                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
+                  <h3 className="text-[10px] sm:text-xs font-bold text-cinema-gold uppercase tracking-wide truncate">
                     {project.title}
                   </h3>
+                  <p className="text-[8px] sm:text-[10px] text-white/70 truncate">
+                    {project.subtitle}
+                  </p>
                 </div>
               )}
             </motion.div>
