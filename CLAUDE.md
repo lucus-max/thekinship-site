@@ -6,7 +6,7 @@
 - **Live Site:** https://www.thekinship.ai
 
 ## 2. Technical Stack
-- **Framework:** Next.js 15 (App Router, TypeScript)
+- **Framework:** Next.js 16 (App Router, TypeScript)
 - **Styling:** Tailwind CSS with custom cinema theme
 - **Motion:** Framer Motion
 - **Deployment:** Vercel (auto-deploys from GitHub)
@@ -35,18 +35,21 @@
 ```
 thekinship-site/
 ├── app/
-│   ├── globals.css       # Global styles, custom cursor, grain texture
-│   ├── layout.tsx        # Root layout with fonts
+│   ├── globals.css       # Global styles, custom cursor, grain texture, mobile cursor override
+│   ├── layout.tsx        # Root layout with fonts, viewport meta
 │   └── page.tsx          # Main page assembling all sections
 ├── components/
+│   ├── Navigation.tsx    # Header nav - desktop links + mobile hamburger menu
 │   ├── Hero.tsx          # Landing - floatingman bg, logo, CTAs
-│   ├── Showcase.tsx      # Video portfolio (19 projects) + modal player
+│   ├── Showcase.tsx      # Video portfolio - tight grid + cursor-following info
 │   ├── Services.tsx      # "What I Do" - 3 cards + tool logos
-│   ├── About.tsx         # Philosophy - 3 value cards + stats
+│   ├── About.tsx         # Philosophy - 3 value cards
 │   ├── Contact.tsx       # "Let's Create" CTA
 │   ├── Footer.tsx        # Site footer
 │   └── ui/
-│       └── ParallaxOverlay.tsx  # 3D constellation sphere (Canvas)
+│       ├── ParallaxOverlay.tsx  # 3D constellation sphere (Canvas)
+│       ├── CustomCursor.tsx     # Custom cursor (desktop only)
+│       └── SmoothScroll.tsx     # Lenis smooth scrolling
 ├── lib/
 │   └── motion.ts         # Framer Motion variants
 ├── public/
@@ -93,19 +96,40 @@ thekinship-site/
 5. Add thumbnail to `public/media/`
 6. Commit and push
 
+### Updating Thumbnails
+1. Replace images in `public/media/` with new files (same filenames)
+2. Commit and push:
+   ```bash
+   git add public/media/
+   git commit -m "Update thumbnails"
+   git push
+   ```
+
 ## 6. Key Components
 
+### Navigation.tsx
+- Fixed header with glassmorphism on scroll
+- **Desktop:** Horizontal links (Work, Services, About, Contact)
+- **Mobile:** Hamburger menu with full-screen overlay
+  - "View The Work" prominently featured in gold
+  - Animated open/close with body scroll lock
+
 ### Showcase.tsx
-- 19 video projects with custom modal player
-- Videos load from Cloudflare R2
-- Hover preloads videos for faster playback
-- "Click to unmute" overlay for autoplay restrictions
-- Loading spinner while buffering
+- **Heading:** "FEATURED WORK"
+- **Layout:** Tight grid with zero gaps
+  - Desktop: 4 columns
+  - Tablet: 3 columns
+  - Mobile: 2 columns
+- **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
+- **Mobile:** Title overlays bottom of each thumbnail
+- **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
+- **Performance:** Preloads video on hover
 
 ### ParallaxOverlay.tsx
-- 3D constellation sphere (300 stars)
-- Canvas-based rendering for performance
-- Mouse-reactive rotation
+- 3D constellation sphere rendered on Canvas
+- **Desktop:** 300 stars, mouse-reactive rotation
+- **Mobile:** 150 stars (performance), touch-reactive rotation
+- Edge vignette effect (stronger opacity at screen edges)
 - Gold color (#D4AF37) matching site branding
 - z-index: 0 (behind content)
 
@@ -119,7 +143,32 @@ thekinship-site/
 - Ethical AI
 - Partnership, Not Transactions
 
-## 7. Design Tokens
+## 7. Mobile Experience
+
+### Viewport & Scaling
+- Proper viewport meta tag in layout.tsx
+- `initialScale: 1`, `maximumScale: 5`, `userScalable: true`
+
+### Navigation
+- Hamburger menu (3 animated lines → X)
+- Full-screen overlay with centered links
+- Body scroll locked when menu open
+
+### Constellation Overlay
+- Reduced to 150 stars for performance
+- Touch event support (touchstart, touchmove)
+- Responds to finger movement like mouse on desktop
+
+### Cursor
+- Custom constellation cursor on desktop only
+- Default system cursor on touch devices
+- Media query: `@media (hover: none) and (pointer: coarse)`
+
+### Showcase Grid
+- Responsive columns (2 → 3 → 4)
+- Title visible on thumbnail (no cursor tooltip on mobile)
+
+## 8. Design Tokens
 
 ### Colors (tailwind.config.ts)
 - `cinema-black`: #000000
@@ -135,8 +184,9 @@ thekinship-site/
 ### Custom Cursor
 - Constellation-style SVG cursor with nodes and connecting lines
 - Defined in `app/globals.css`
+- Disabled on touch devices
 
-## 8. Current Videos (19 total)
+## 9. Current Videos (19 total)
 
 | Title | File |
 |-------|------|
@@ -160,7 +210,7 @@ thekinship-site/
 | VW GTE | vw-gte.mp4 |
 | Three Make It Right | three-make-it-right.mp4 |
 
-## 9. Quick Commands
+## 10. Quick Commands
 
 ```bash
 # Start dev server
@@ -179,7 +229,7 @@ ffmpeg -i input.mov -c:v libx264 -crf 18 -preset slow -c:a aac -b:a 192k -movfla
 ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 ```
 
-## 10. Troubleshooting
+## 11. Troubleshooting
 
 ### Videos not loading
 - Check CORS is enabled on R2 bucket
@@ -193,3 +243,8 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 ### Deployment not updating
 - Check Vercel dashboard for build errors
 - Force redeploy: `git commit --allow-empty -m "Redeploy" && git push`
+
+### Mobile issues
+- Check viewport meta in layout.tsx
+- Verify touch events in ParallaxOverlay.tsx
+- Test hamburger menu on real device
