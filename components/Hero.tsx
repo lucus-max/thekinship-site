@@ -46,7 +46,7 @@ export default function Hero() {
             className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-serif text-white uppercase"
             style={{ letterSpacing: '0.20em' }}
           >
-            THE KINSHIP
+            THE KI<span style={{ letterSpacing: '0.16em' }}>N</span><span style={{ letterSpacing: '0.16em' }}>S</span>HIP
           </motion.h1>
 
           {/* Body: high readability, generous leading */}
