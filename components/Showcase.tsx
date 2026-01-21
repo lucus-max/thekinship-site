@@ -10,11 +10,11 @@ function seededRandom(seed: number) {
   return x - Math.floor(x)
 }
 
-// Generate random rotation between 0 and 5 degrees (positive or negative)
+// Generate random rotation between 0 and 3 degrees (positive or negative)
 function generateTileRotations(count: number) {
   return Array.from({ length: count }, (_, i) => ({
-    rotateX: (seededRandom(i * 7 + 1) * 5) * (seededRandom(i * 13) > 0.5 ? 1 : -1),
-    rotateY: (seededRandom(i * 11 + 2) * 5) * (seededRandom(i * 17) > 0.5 ? 1 : -1),
+    rotateX: (seededRandom(i * 7 + 1) * 3) * (seededRandom(i * 13) > 0.5 ? 1 : -1),
+    rotateY: (seededRandom(i * 11 + 2) * 3) * (seededRandom(i * 17) > 0.5 ? 1 : -1),
   }))
 }
 
@@ -401,8 +401,8 @@ export default function Showcase() {
   const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 })
 
   // Transform mouse position to rotation (subtle tilt) - rotates TOWARD mouse
-  const rotateY = useTransform(smoothMouseX, [-1, 1], [5.5, -5.5])
-  const rotateX = useTransform(smoothMouseY, [-1, 1], [-3.5, 3.5])
+  const rotateY = useTransform(smoothMouseX, [-1, 1], [2.75, -2.75])
+  const rotateX = useTransform(smoothMouseY, [-1, 1], [-1.75, 1.75])
 
   useEffect(() => {
     const checkMobile = () => {
