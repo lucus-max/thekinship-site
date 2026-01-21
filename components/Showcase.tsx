@@ -166,25 +166,27 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
   const [showControls, setShowControls] = useState(false)
   const [progress, setProgress] = useState(0)
   const [isMuted, setIsMuted] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const hideControlsTimeout = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
     if (isOpen && videoRef.current) {
-      const video = videoRef.current
-      video.volume = 1
-      video.muted = false
+      const vid = videoRef.current
+      setIsLoading(true)
+      vid.volume = 1
+      vid.muted = false
 
       // Try to play unmuted, fallback to muted if browser blocks
-      video.play().then(() => {
+      vid.play().then(() => {
         setIsMuted(false)
       }).catch(() => {
         // Autoplay with sound was blocked, try muted
-        video.muted = true
+        vid.muted = true
         setIsMuted(true)
-        video.play()
+        vid.play()
       })
     }
-  }, [isOpen])
+  }, [isOpen, video])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -260,13 +262,22 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
             className="relative w-full max-w-[95vw] aspect-video"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Loading spinner */}
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 border-2 border-cinema-gold/30 border-t-cinema-gold rounded-full animate-spin" />
+              </div>
+            )}
+
             <video
               ref={videoRef}
               src={video}
               className="w-full h-full object-contain"
               playsInline
+              preload="auto"
               disablePictureInPicture
               controlsList="nodownload nofullscreen noremoteplayback"
+              onCanPlay={() => setIsLoading(false)}
               onEnded={onClose}
               onTimeUpdate={handleTimeUpdate}
               onClick={(e) => {
@@ -278,6 +289,24 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
                 }
               }}
             />
+
+            {/* Click to unmute overlay */}
+            {isMuted && !isLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute top-6 left-6 px-4 py-2 bg-cinema-black/80 border border-cinema-gold/50 text-cinema-gold text-sm tracking-wide cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (videoRef.current) {
+                    videoRef.current.muted = false
+                    setIsMuted(false)
+                  }
+                }}
+              >
+                Click to unmute
+              </motion.div>
+            )}
 
             {/* Custom minimal controls */}
             <motion.div
