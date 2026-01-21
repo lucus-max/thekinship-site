@@ -43,7 +43,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ ...spring, delay: 0.6 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[10rem] font-serif text-white uppercase"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[10rem] font-serif text-white uppercase whitespace-nowrap text-center"
             style={{ letterSpacing: '0.10em' }}
           >
             THE KI<span style={{ letterSpacing: '0.06em' }}>N</span><span style={{ letterSpacing: '0.07em' }}>S</span>HIP
