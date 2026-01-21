@@ -118,8 +118,8 @@ thekinship-site/
 
 ### Hero.tsx
 - **Parallax layers:** Background (floatingman_bg.png) and foreground (floatingman_fg_v2.png)
-- **Background:** Moves opposite to mouse (±15px), 100% scale
-- **Foreground:** Moves with mouse (±30px), 110% scale, centered pivot
+- **Background:** Moves opposite to mouse (±15px), fills frame with object-cover
+- **Foreground:** Moves with mouse (±30px), 105% scale, centered with object-contain
 - **Gradients:** Top fade (black→transparent) and bottom fade (transparent→black)
 - Disabled on mobile for performance
 
@@ -129,11 +129,15 @@ thekinship-site/
   - First 3 videos: 3 columns (featured row)
   - Remaining: 4 columns desktop, 3 tablet, 2 mobile
 - **3D Tilt Effect (desktop):** Entire grid subtly tilts away from mouse position (±2.75° Y, ±1.75° X)
-- **Hover animation:** Hovered tile pops forward (z: 42 featured, z: 60 others), non-hovered tiles fade to 50% opacity
+- **Hover animation:**
+  - Hovered tile pops forward (z: 42 featured, z: 60 others)
+  - 2px gold border (#D4AF37) fades in on hovered tile
+  - Only adjacent tiles (including diagonals) fade to 65% opacity
 - **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
 - **Mobile:** Title overlays bottom of each thumbnail
 - **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
-- **Performance:** Preloads video on hover
+  - Safari-compatible: uses preload="metadata", canplaythrough event, stall recovery
+  - Error state with retry button
 
 ### ParallaxOverlay.tsx
 - 3D constellation sphere rendered on Canvas
@@ -273,3 +277,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.1 | Base site with all 19 videos, constellation overlay, mobile support |
 | v1.2 | 3D grid tilt, hover pop-forward effect, compact mobile nav dropdown, mobile constellation refinements |
 | v1.3 | Hero parallax layers, video reordering, grid tilt inversion, mailto opens in new window |
+| v1.4 | Adjacent-only hover dimming (with diagonals), gold border on hovered tiles, Safari video fixes, Hero foreground sizing |
