@@ -64,7 +64,7 @@ export default function Hero() {
             className="overflow-hidden text-center"
           >
             <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto leading-relaxed">
-              25 years of Generation
+              25 years of Generation.
             </p>
           </motion.div>
 
