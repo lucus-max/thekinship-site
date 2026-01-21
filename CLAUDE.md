@@ -136,7 +136,9 @@ thekinship-site/
 - **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
 - **Mobile:** Title overlays bottom of each thumbnail
 - **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
-  - Safari-compatible: uses preload="metadata", canplaythrough event, stall recovery
+  - Cross-browser compatible: uses `canplay` event (not `canplaythrough`) for Firefox support
+  - Handles autoplay blocks gracefully with play button overlay
+  - Separate states for load errors vs autoplay policy blocks
   - Error state with retry button
 
 ### ParallaxOverlay.tsx
@@ -255,11 +257,17 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 ### Videos not loading
 - Check CORS is enabled on R2 bucket
 - Verify filename matches exactly (case-sensitive)
-- Check video URL in browser directly
+- Check video URL in browser directly with curl: `curl -I "https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/filename.mp4"`
+- 404 = file missing from R2, needs upload
 
 ### No audio on videos
 - Browser autoplay policy blocks audio - user sees "Click to unmute"
 - Ensure video has AAC audio (not PCM)
+
+### Autoplay blocked (play button shows)
+- Normal browser behavior - user clicks play button to start
+- Firefox is stricter than Chrome/Safari about autoplay
+- Video modal handles this with `needsInteraction` state
 
 ### Deployment not updating
 - Check Vercel dashboard for build errors
@@ -278,3 +286,5 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.2 | 3D grid tilt, hover pop-forward effect, compact mobile nav dropdown, mobile constellation refinements |
 | v1.3 | Hero parallax layers, video reordering, grid tilt inversion, mailto opens in new window |
 | v1.4 | Adjacent-only hover dimming (with diagonals), gold border on hovered tiles, Safari video fixes, Hero foreground sizing |
+| v1.5 | About section copy updates |
+| v1.6 | Firefox video fix - use `canplay` event, play button overlay for autoplay blocks, uploaded missing R2 videos |
