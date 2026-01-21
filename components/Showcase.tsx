@@ -208,6 +208,7 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
   const [isMuted, setIsMuted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
+  const [needsInteraction, setNeedsInteraction] = useState(false)
   const hideControlsTimeout = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
@@ -215,6 +216,7 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
       const vid = videoRef.current
       setIsLoading(true)
       setLoadError(false)
+      setNeedsInteraction(false)
 
       const attemptPlay = () => {
         vid.volume = 1
@@ -222,27 +224,28 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
 
         vid.play().then(() => {
           setIsMuted(false)
+          setIsLoading(false)
         }).catch(() => {
           // Autoplay blocked - try muted
           vid.muted = true
           setIsMuted(true)
-          vid.play().catch(() => {
-            // Still failed - user will need to interact
-            setLoadError(true)
+          vid.play().then(() => {
+            setIsLoading(false)
+          }).catch(() => {
+            // Autoplay completely blocked - user needs to click to play
+            // This is NOT a load error, just browser policy
+            setIsLoading(false)
+            setNeedsInteraction(true)
           })
         })
       }
 
       // Use 'canplay' instead of 'canplaythrough' for broader browser support
-      // canplay fires when enough data is available to start playing
-      // canplaythrough may not fire with preload="metadata" on some browsers
       const handleCanPlay = () => attemptPlay()
 
       if (vid.readyState >= 2) {
-        // HAVE_CURRENT_DATA or higher - enough to start
         attemptPlay()
       } else {
-        // Force load the video data then play when ready
         vid.load()
         vid.addEventListener('canplay', handleCanPlay, { once: true })
       }
@@ -349,6 +352,37 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
                   >
                     Retry
                   </button>
+                </div>
+              </div>
+            )}
+
+            {needsInteraction && !isLoading && !loadError && (
+              <div
+                className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (videoRef.current) {
+                    videoRef.current.muted = false
+                    setIsMuted(false)
+                    videoRef.current.play().then(() => {
+                      setNeedsInteraction(false)
+                    }).catch(() => {
+                      // Try muted as fallback
+                      if (videoRef.current) {
+                        videoRef.current.muted = true
+                        setIsMuted(true)
+                        videoRef.current.play().then(() => {
+                          setNeedsInteraction(false)
+                        })
+                      }
+                    })
+                  }
+                }}
+              >
+                <div className="w-20 h-20 rounded-full bg-cinema-gold/20 border border-cinema-gold/50 flex items-center justify-center hover:bg-cinema-gold/30 transition-colors">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-cinema-gold ml-1">
+                    <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
+                  </svg>
                 </div>
               </div>
             )}
