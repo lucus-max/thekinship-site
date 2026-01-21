@@ -44,9 +44,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ ...spring, delay: 0.6 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-serif text-white uppercase"
-            style={{ letterSpacing: '0.14em' }}
+            style={{ letterSpacing: '0.10em' }}
           >
-            THE KI<span style={{ letterSpacing: '0.11em' }}>N</span><span style={{ letterSpacing: '0.11em' }}>S</span>HIP
+            THE KI<span style={{ letterSpacing: '0.06em' }}>N</span><span style={{ letterSpacing: '0.07em' }}>S</span>HIP
           </motion.h1>
 
           {/* Body: high readability, generous leading */}
