@@ -125,18 +125,18 @@ export default function ParallaxOverlay() {
       // Draw connections
       ctx.strokeStyle = '#D4AF37'
       ctx.lineWidth = 0.5
-      ctx.beginPath()
       for (const conn of connections) {
         const from = projected[conn.from]
         const to = projected[conn.to]
         const opacity = Math.min(from.depth, to.depth) * 0.5
         if (opacity > 0.05) {
           ctx.globalAlpha = opacity
+          ctx.beginPath()
           ctx.moveTo(from.x, from.y)
           ctx.lineTo(to.x, to.y)
+          ctx.stroke()
         }
       }
-      ctx.stroke()
 
       // Draw stars
       ctx.fillStyle = '#D4AF37'
@@ -171,7 +171,7 @@ export default function ParallaxOverlay() {
   }, [])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 opacity-70"

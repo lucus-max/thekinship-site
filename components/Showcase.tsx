@@ -441,7 +441,7 @@ export default function Showcase() {
 
   return (
     <>
-      <section id="work" className="relative py-32 lg:py-40 overflow-hidden">
+      <section id="work" className="relative z-10 py-32 lg:py-40 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             ref={ref}
