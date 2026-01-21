@@ -47,41 +47,45 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background layer - parallax, inverted direction */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        style={{
-          x: isMobile ? 0 : bgX,
-          y: isMobile ? 0 : bgY,
-          transformOrigin: 'center center',
-        }}
-      >
-        <Image
-          src="/media/floatingman_bg.png"
-          alt=""
-          fill
-          priority
-          className="object-cover opacity-70 scale-100"
-        />
-      </motion.div>
+      <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden">
+        <motion.div
+          className="relative w-full h-full max-w-[1920px] max-h-[1080px]"
+          style={{
+            x: isMobile ? 0 : bgX,
+            y: isMobile ? 0 : bgY,
+            transformOrigin: 'center center',
+          }}
+        >
+          <Image
+            src="/media/floatingman_bg.png"
+            alt=""
+            fill
+            priority
+            className="object-cover opacity-70"
+          />
+        </motion.div>
+      </div>
 
       {/* Foreground (man) layer - parallax, centered pivot */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        style={{
-          x: isMobile ? 0 : fgX,
-          y: isMobile ? 0 : fgY,
-          transformOrigin: 'center center',
-        }}
-      >
-        <Image
-          src="/media/floatingman_fg_v2.png"
-          alt=""
-          fill
-          priority
-          className="object-cover opacity-70 scale-110"
-          style={{ objectPosition: 'center center' }}
-        />
-      </motion.div>
+      <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden">
+        <motion.div
+          className="relative w-full h-full max-w-[2112px] max-h-[1188px]"
+          style={{
+            x: isMobile ? 0 : fgX,
+            y: isMobile ? 0 : fgY,
+            transformOrigin: 'center center',
+          }}
+        >
+          <Image
+            src="/media/floatingman_fg_v2.png"
+            alt=""
+            fill
+            priority
+            className="object-cover opacity-70"
+            style={{ objectPosition: 'center center' }}
+          />
+        </motion.div>
+      </div>
 
       {/* Gradient overlays - static, above parallax layers */}
       <div className="absolute inset-0 z-0 pointer-events-none">

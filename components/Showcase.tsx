@@ -18,6 +18,24 @@ function generateTileRotations(count: number) {
   }))
 }
 
+// Get adjacent tile indices (left, right, above, below) within a grid
+function getAdjacentIndices(index: number, totalCount: number, columns: number): Set<number> {
+  const adjacent = new Set<number>()
+  const row = Math.floor(index / columns)
+  const col = index % columns
+
+  // Left
+  if (col > 0) adjacent.add(index - 1)
+  // Right
+  if (col < columns - 1 && index + 1 < totalCount) adjacent.add(index + 1)
+  // Above
+  if (row > 0) adjacent.add(index - columns)
+  // Below
+  if (index + columns < totalCount) adjacent.add(index + columns)
+
+  return adjacent
+}
+
 const projects = [
   {
     title: 'VFX SHOWREEL',
@@ -390,9 +408,51 @@ export default function Showcase() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isMobile, setIsMobile] = useState(false)
+  const [grid1Cols, setGrid1Cols] = useState(3)
+  const [grid2Cols, setGrid2Cols] = useState(4)
 
   // Generate random rotations for each tile (consistent across renders)
   const tileRotations = useMemo(() => generateTileRotations(projects.length + 1), []) // +1 for "more to come"
+
+  // Calculate adjacent tiles for the hovered tile
+  const adjacentTiles = useMemo(() => {
+    if (hoveredIndex === null) return new Set<number>()
+
+    const adjacent = new Set<number>()
+
+    if (hoveredIndex < 3) {
+      // Hovered tile is in grid 1 (indices 0-2)
+      const grid1Adjacent = getAdjacentIndices(hoveredIndex, 3, grid1Cols)
+      grid1Adjacent.forEach(i => adjacent.add(i))
+
+      // Add tiles from top row of grid 2 that are visually below
+      // Grid 1 bottom row tiles are adjacent to grid 2 top row tiles
+      const hoveredCol = hoveredIndex % grid1Cols
+      // Map grid 1 column to grid 2 column (approximate)
+      const grid2TopRow = Math.floor(hoveredCol * grid2Cols / grid1Cols)
+      // Add the tile directly below and possibly neighbors
+      if (grid2TopRow >= 0 && grid2TopRow < grid2Cols) adjacent.add(3 + grid2TopRow)
+      if (grid2TopRow > 0) adjacent.add(3 + grid2TopRow - 1)
+      if (grid2TopRow < grid2Cols - 1) adjacent.add(3 + grid2TopRow + 1)
+    } else {
+      // Hovered tile is in grid 2 (indices 3+)
+      const grid2Index = hoveredIndex - 3
+      const grid2Adjacent = getAdjacentIndices(grid2Index, projects.length - 3, grid2Cols)
+      grid2Adjacent.forEach(i => adjacent.add(i + 3)) // Offset back to global index
+
+      // If in top row of grid 2, add adjacent tiles from grid 1
+      if (grid2Index < grid2Cols) {
+        const hoveredCol = grid2Index % grid2Cols
+        // Map grid 2 column to grid 1 column (approximate)
+        const grid1BottomRow = Math.floor(hoveredCol * grid1Cols / grid2Cols)
+        if (grid1BottomRow >= 0 && grid1BottomRow < 3) adjacent.add(grid1BottomRow)
+        if (grid1BottomRow > 0) adjacent.add(grid1BottomRow - 1)
+        if (grid1BottomRow < 2) adjacent.add(grid1BottomRow + 1)
+      }
+    }
+
+    return adjacent
+  }, [hoveredIndex, grid1Cols, grid2Cols])
 
   // Mouse tracking for 3D tilt effect
   const mouseX = useMotionValue(0)
@@ -406,7 +466,14 @@ export default function Showcase() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+      const width = window.innerWidth
+      setIsMobile(width < 768 || 'ontouchstart' in window)
+      // Grid 1: 1 col on mobile, 3 cols on md+
+      setGrid1Cols(width < 768 ? 1 : 3)
+      // Grid 2: 2 cols on mobile, 3 on md, 4 on lg
+      if (width < 768) setGrid2Cols(2)
+      else if (width < 1024) setGrid2Cols(3)
+      else setGrid2Cols(4)
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
@@ -473,8 +540,7 @@ export default function Showcase() {
             >
               {projects.slice(0, 3).map((project, index) => {
                 const isHovered = hoveredIndex === index
-                const anotherIsHovered = hoveredIndex !== null && hoveredIndex !== index
-                const rotation = tileRotations[index]
+                const isAdjacent = adjacentTiles.has(index)
 
                 return (
                   <motion.div
@@ -487,7 +553,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: isHovered ? 42 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: anotherIsHovered ? 0.5 : 1,
+                      opacity: isAdjacent ? 0.7 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -544,8 +610,7 @@ export default function Showcase() {
               {projects.slice(3).map((project, index) => {
                 const globalIndex = index + 3 // Offset by first 3
                 const isHovered = hoveredIndex === globalIndex
-                const anotherIsHovered = hoveredIndex !== null && hoveredIndex !== globalIndex
-                const rotation = tileRotations[globalIndex]
+                const isAdjacent = adjacentTiles.has(globalIndex)
 
                 return (
                   <motion.div
@@ -558,7 +623,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: anotherIsHovered ? 0.5 : 1,
+                      opacity: isAdjacent ? 0.7 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
