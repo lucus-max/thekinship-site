@@ -445,7 +445,7 @@ export default function Showcase() {
               <div className="w-12 h-px bg-cinema-gold mb-6" />
             </div>
             <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white leading-tight text-center">
-              FEATURED WORK
+              WORK
             </h2>
           </motion.div>
         </div>
