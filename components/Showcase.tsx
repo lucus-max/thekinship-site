@@ -199,22 +199,42 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
   const [progress, setProgress] = useState(0)
   const [isMuted, setIsMuted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
   const hideControlsTimeout = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
     if (isOpen && videoRef.current) {
       const vid = videoRef.current
       setIsLoading(true)
-      vid.volume = 1
-      vid.muted = false
+      setLoadError(false)
 
-      vid.play().then(() => {
-        setIsMuted(false)
-      }).catch(() => {
-        vid.muted = true
-        setIsMuted(true)
-        vid.play()
-      })
+      const attemptPlay = () => {
+        vid.volume = 1
+        vid.muted = false
+
+        vid.play().then(() => {
+          setIsMuted(false)
+        }).catch(() => {
+          // Autoplay blocked - try muted
+          vid.muted = true
+          setIsMuted(true)
+          vid.play().catch(() => {
+            // Still failed - user will need to interact
+            setLoadError(true)
+          })
+        })
+      }
+
+      // Wait for enough data to play through
+      if (vid.readyState >= 3) {
+        attemptPlay()
+      } else {
+        vid.addEventListener('canplaythrough', attemptPlay, { once: true })
+      }
+
+      return () => {
+        vid.removeEventListener('canplaythrough', attemptPlay)
+      }
     }
   }, [isOpen, video])
 
@@ -290,21 +310,54 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
             className="relative w-full max-w-[95vw] aspect-video"
             onClick={(e) => e.stopPropagation()}
           >
-            {isLoading && (
+            {isLoading && !loadError && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-12 h-12 border-2 border-cinema-gold/30 border-t-cinema-gold rounded-full animate-spin" />
               </div>
             )}
 
+            {loadError && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center px-6">
+                  <p className="text-cinema-gold text-lg mb-4">Video failed to load</p>
+                  <button
+                    className="px-6 py-2 border border-cinema-gold/50 text-cinema-gold text-sm tracking-wide hover:bg-cinema-gold/10 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setLoadError(false)
+                      setIsLoading(true)
+                      if (videoRef.current) {
+                        videoRef.current.load()
+                        videoRef.current.play().catch(() => setLoadError(true))
+                      }
+                    }}
+                  >
+                    Retry
+                  </button>
+                </div>
+              </div>
+            )}
+
             <video
+              key={video}
               ref={videoRef}
               src={video}
               className="w-full h-full object-contain"
               playsInline
-              preload="auto"
+              preload="metadata"
               disablePictureInPicture
               controlsList="nodownload nofullscreen noremoteplayback"
               onCanPlay={() => setIsLoading(false)}
+              onWaiting={() => setIsLoading(true)}
+              onPlaying={() => setIsLoading(false)}
+              onError={() => setLoadError(true)}
+              onStalled={() => {
+                // Safari sometimes stalls - try to recover
+                if (videoRef.current && !videoRef.current.paused) {
+                  videoRef.current.load()
+                  videoRef.current.play().catch(() => {})
+                }
+              }}
               onEnded={onClose}
               onTimeUpdate={handleTimeUpdate}
               onClick={(e) => {
@@ -561,11 +614,6 @@ export default function Showcase() {
                       if (!isMobile) {
                         setHoveredIndex(index)
                         setHoveredProject(project)
-                        const link = document.createElement('link')
-                        link.rel = 'preload'
-                        link.as = 'video'
-                        link.href = project.video
-                        document.head.appendChild(link)
                       }
                     }}
                     onMouseLeave={() => setHoveredProject(null)}
@@ -631,11 +679,6 @@ export default function Showcase() {
                       if (!isMobile) {
                         setHoveredIndex(globalIndex)
                         setHoveredProject(project)
-                        const link = document.createElement('link')
-                        link.rel = 'preload'
-                        link.as = 'video'
-                        link.href = project.video
-                        document.head.appendChild(link)
                       }
                     }}
                     onMouseLeave={() => setHoveredProject(null)}
