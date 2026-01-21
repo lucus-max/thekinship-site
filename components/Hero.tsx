@@ -60,7 +60,7 @@ export default function Hero() {
           alt=""
           fill
           priority
-          className="object-cover opacity-70 scale-105"
+          className="object-cover opacity-70 scale-[0.735]"
         />
       </motion.div>
 
