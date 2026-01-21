@@ -47,6 +47,8 @@ export default function Contact() {
           >
             <motion.a
               href="mailto:info@thekinship.ai"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={spring}
