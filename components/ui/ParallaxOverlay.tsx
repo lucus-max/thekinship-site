@@ -122,13 +122,27 @@ export default function ParallaxOverlay() {
         }
       })
 
+      // Calculate vignette - stronger at edges
+      const maxDist = Math.sqrt(centerX * centerX + centerY * centerY)
+      const getEdgeBoost = (px: number, py: number) => {
+        const dx = px - centerX
+        const dy = py - centerY
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const normalizedDist = dist / maxDist
+        // Boost from 0.4 at center to 1.0 at edges
+        return 0.4 + normalizedDist * 0.6
+      }
+
       // Draw connections
       ctx.strokeStyle = '#D4AF37'
       ctx.lineWidth = 0.5
       for (const conn of connections) {
         const from = projected[conn.from]
         const to = projected[conn.to]
-        const opacity = Math.min(from.depth, to.depth) * 0.5
+        const midX = (from.x + to.x) / 2
+        const midY = (from.y + to.y) / 2
+        const edgeBoost = getEdgeBoost(midX, midY)
+        const opacity = Math.min(from.depth, to.depth) * 0.5 * edgeBoost
         if (opacity > 0.05) {
           ctx.globalAlpha = opacity
           ctx.beginPath()
@@ -141,7 +155,8 @@ export default function ParallaxOverlay() {
       // Draw stars
       ctx.fillStyle = '#D4AF37'
       for (const p of projected) {
-        ctx.globalAlpha = 0.3 + p.depth * 0.7
+        const edgeBoost = getEdgeBoost(p.x, p.y)
+        ctx.globalAlpha = (0.3 + p.depth * 0.7) * edgeBoost
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fill()
