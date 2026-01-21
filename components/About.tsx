@@ -36,7 +36,7 @@ export default function About() {
                 At the intersection of artistry and innovation, I believe the most powerful creative work emerges when human vision guides intelligent tools.
               </p>
               <p className="text-lg leading-relaxed">
-                With 25 years in VFX, compositing, and creative direction across commercials and branded content, I'm now embracing the integration of generative AI into creative workflows.
+                With 25 years in VFX, compositing, and creative direction across commercials and branded content, I'm embracing the integration of generative AI into creative workflows.
               </p>
             </div>
 
