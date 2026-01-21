@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 import { scrollReveal, spring, staggerContainer, staggerItem } from '@/lib/motion'
 
@@ -376,6 +376,16 @@ export default function Showcase() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isMobile, setIsMobile] = useState(false)
 
+  // Mouse tracking for 3D tilt effect
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 20 })
+  const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 })
+
+  // Transform mouse position to rotation (subtle tilt)
+  const rotateY = useTransform(smoothMouseX, [-1, 1], [-8, 8])
+  const rotateX = useTransform(smoothMouseY, [-1, 1], [5, -5])
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
@@ -384,6 +394,19 @@ export default function Showcase() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      // Normalize mouse position to -1 to 1
+      mouseX.set((e.clientX / window.innerWidth) * 2 - 1)
+      mouseY.set((e.clientY / window.innerHeight) * 2 - 1)
+    }
+
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleGlobalMouseMove)
+      return () => window.removeEventListener('mousemove', handleGlobalMouseMove)
+    }
+  }, [isMobile, mouseX, mouseY])
 
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePos({ x: e.clientX, y: e.clientY })
@@ -409,123 +432,136 @@ export default function Showcase() {
           </motion.div>
         </div>
 
-        {/* First 3 featured videos - 3 per row */}
-        <motion.div
-          ref={gridRef}
-          variants={staggerContainer}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 md:grid-cols-3"
-          onMouseMove={handleMouseMove}
-        >
-          {projects.slice(0, 3).map((project, index) => (
-            <motion.div
-              key={project.title}
-              variants={staggerItem}
-              className="relative aspect-video cursor-pointer overflow-hidden group"
-              style={{ zIndex: 1 }}
-              whileHover={{ scale: 1.15, zIndex: 10 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              onClick={() => setActiveVideo(project.video)}
-              onMouseEnter={() => {
-                if (!isMobile) {
-                  setHoveredProject(project)
-                  const link = document.createElement('link')
-                  link.rel = 'preload'
-                  link.as = 'video'
-                  link.href = project.video
-                  document.head.appendChild(link)
-                }
-              }}
-              onMouseLeave={() => setHoveredProject(null)}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
-              <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-                className="relative w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              {isMobile && (
-                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
-                  <h3 className="text-xs sm:text-sm font-bold text-cinema-gold uppercase tracking-wide">
-                    {project.title}
-                  </h3>
-                  <p className="text-[10px] sm:text-xs text-white/70 mt-0.5">
-                    {project.subtitle}
-                  </p>
-                  <p className="text-[10px] sm:text-xs text-white/50 mt-0.5 line-clamp-2">
-                    {project.description}
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Remaining videos - tight grid */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          onMouseMove={handleMouseMove}
-        >
-          {projects.slice(3).map((project, index) => (
-            <motion.div
-              key={project.title}
-              variants={staggerItem}
-              className="relative aspect-video cursor-pointer overflow-hidden group"
-              style={{ zIndex: 1 }}
-              whileHover={{ scale: 1.15, zIndex: 10 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              onClick={() => setActiveVideo(project.video)}
-              onMouseEnter={() => {
-                if (!isMobile) {
-                  setHoveredProject(project)
-                  const link = document.createElement('link')
-                  link.rel = 'preload'
-                  link.as = 'video'
-                  link.href = project.video
-                  document.head.appendChild(link)
-                }
-              }}
-              onMouseLeave={() => setHoveredProject(null)}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
-              <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-                className="relative w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              {isMobile && (
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
-                  <h3 className="text-[10px] sm:text-xs font-bold text-cinema-gold uppercase tracking-wide truncate">
-                    {project.title}
-                  </h3>
-                  <p className="text-[8px] sm:text-[10px] text-white/70 truncate">
-                    {project.subtitle}
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          ))}
-
-          {/* More to come placeholder */}
+        {/* 3D Tilt Container - desktop only */}
+        <div style={{ perspective: isMobile ? 'none' : '1500px' }}>
           <motion.div
-            variants={staggerItem}
-            className="relative aspect-video overflow-hidden bg-cinema-card flex items-center justify-center"
+            style={{
+              rotateX: isMobile ? 0 : rotateX,
+              rotateY: isMobile ? 0 : rotateY,
+              scale: isMobile ? 1 : 0.92,
+              transformStyle: 'preserve-3d',
+            }}
+            transition={{ type: 'spring', stiffness: 50, damping: 20 }}
           >
-            <span className="text-lg md:text-xl lg:text-2xl tracking-widest uppercase font-bold text-cinema-gold">
-              MORE TO COME
-            </span>
+            {/* First 3 featured videos - 3 per row */}
+            <motion.div
+              ref={gridRef}
+              variants={staggerContainer}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              className="grid grid-cols-1 md:grid-cols-3"
+              onMouseMove={handleMouseMove}
+            >
+              {projects.slice(0, 3).map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  variants={staggerItem}
+                  className="relative aspect-video cursor-pointer overflow-hidden group"
+                  style={{ zIndex: 1 }}
+                  whileHover={{ scale: 1.15, zIndex: 10 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  onClick={() => setActiveVideo(project.video)}
+                  onMouseEnter={() => {
+                    if (!isMobile) {
+                      setHoveredProject(project)
+                      const link = document.createElement('link')
+                      link.rel = 'preload'
+                      link.as = 'video'
+                      link.href = project.video
+                      document.head.appendChild(link)
+                    }
+                  }}
+                  onMouseLeave={() => setHoveredProject(null)}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    className="relative w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {isMobile && (
+                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
+                      <h3 className="text-xs sm:text-sm font-bold text-cinema-gold uppercase tracking-wide">
+                        {project.title}
+                      </h3>
+                      <p className="text-[10px] sm:text-xs text-white/70 mt-0.5">
+                        {project.subtitle}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-white/50 mt-0.5 line-clamp-2">
+                        {project.description}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Remaining videos - tight grid */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              onMouseMove={handleMouseMove}
+            >
+              {projects.slice(3).map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  variants={staggerItem}
+                  className="relative aspect-video cursor-pointer overflow-hidden group"
+                  style={{ zIndex: 1 }}
+                  whileHover={{ scale: 1.15, zIndex: 10 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  onClick={() => setActiveVideo(project.video)}
+                  onMouseEnter={() => {
+                    if (!isMobile) {
+                      setHoveredProject(project)
+                      const link = document.createElement('link')
+                      link.rel = 'preload'
+                      link.as = 'video'
+                      link.href = project.video
+                      document.head.appendChild(link)
+                    }
+                  }}
+                  onMouseLeave={() => setHoveredProject(null)}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    className="relative w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {isMobile && (
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
+                      <h3 className="text-[10px] sm:text-xs font-bold text-cinema-gold uppercase tracking-wide truncate">
+                        {project.title}
+                      </h3>
+                      <p className="text-[8px] sm:text-[10px] text-white/70 truncate">
+                        {project.subtitle}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+
+              {/* More to come placeholder */}
+              <motion.div
+                variants={staggerItem}
+                className="relative aspect-video overflow-hidden bg-cinema-card flex items-center justify-center"
+              >
+                <span className="text-lg md:text-xl lg:text-2xl tracking-widest uppercase font-bold text-cinema-gold">
+                  MORE TO COME
+                </span>
+              </motion.div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* Cursor-following info box (desktop only) */}
         <AnimatePresence>
