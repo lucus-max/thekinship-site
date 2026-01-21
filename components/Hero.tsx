@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { spring, fadeUpBlur, clipReveal } from '@/lib/motion'
-// Image import kept for logo
 
 export default function Hero() {
   return (
@@ -40,20 +39,15 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-32 w-full">
         <div className="flex flex-col items-center space-y-12">
           {/* Hero Logo */}
-          <motion.div
+          <motion.h1
             initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ ...spring, delay: 0.2 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif text-white uppercase"
+            style={{ letterSpacing: '0.4em' }}
           >
-            <Image
-              src="/logo_1.png"
-              alt="The Kinship"
-              width={800}
-              height={74}
-              priority
-              className="w-auto h-12 sm:h-16 md:h-20 lg:h-28 object-contain"
-            />
-          </motion.div>
+            THE KINSHIP
+          </motion.h1>
 
           {/* Body: high readability, generous leading */}
           <motion.div
