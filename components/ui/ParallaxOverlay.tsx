@@ -55,6 +55,7 @@ export default function ParallaxOverlay() {
     velocityX: 0,
     velocityY: 0,
     autoRot: 0,
+    isMobile: false,
   })
 
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function ParallaxOverlay() {
 
     // Detect mobile and set star count accordingly
     const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
+    stateRef.current.isMobile = isMobile
     const starCount = isMobile ? 150 : 300
     starsRef.current = generateStars(starCount)
     connectionsRef.current = generateConnections(starsRef.current)
@@ -116,6 +118,10 @@ export default function ParallaxOverlay() {
       const centerY = height / 2
       const scale = Math.min(width, height) * 0.78
 
+      // Mobile: 50% smaller dots, 40% less opacity
+      const mobileSizeMultiplier = state.isMobile ? 0.5 : 1.0
+      const mobileOpacityMultiplier = state.isMobile ? 0.6 : 1.0
+
       // Clear
       ctx.clearRect(0, 0, width, height)
 
@@ -160,10 +166,10 @@ export default function ParallaxOverlay() {
         const midX = (from.x + to.x) / 2
         const midY = (from.y + to.y) / 2
         const edgeBoost = getEdgeBoost(midX, midY)
-        const opacity = Math.min(from.depth, to.depth) * 0.5 * edgeBoost.opacity
+        const opacity = Math.min(from.depth, to.depth) * 0.5 * edgeBoost.opacity * mobileOpacityMultiplier
         if (opacity > 0.05) {
           ctx.globalAlpha = opacity
-          ctx.lineWidth = 0.5 * edgeBoost.size
+          ctx.lineWidth = 0.5 * edgeBoost.size * mobileSizeMultiplier
           ctx.beginPath()
           ctx.moveTo(from.x, from.y)
           ctx.lineTo(to.x, to.y)
@@ -175,9 +181,9 @@ export default function ParallaxOverlay() {
       ctx.fillStyle = '#D4AF37'
       for (const p of projected) {
         const edgeBoost = getEdgeBoost(p.x, p.y)
-        ctx.globalAlpha = (0.3 + p.depth * 0.7) * edgeBoost.opacity
+        ctx.globalAlpha = (0.3 + p.depth * 0.7) * edgeBoost.opacity * mobileOpacityMultiplier
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size * edgeBoost.size, 0, Math.PI * 2)
+        ctx.arc(p.x, p.y, p.size * edgeBoost.size * mobileSizeMultiplier, 0, Math.PI * 2)
         ctx.fill()
       }
 
