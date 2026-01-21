@@ -463,6 +463,16 @@ export default function Showcase() {
               )}
             </motion.div>
           ))}
+
+          {/* More to come placeholder */}
+          <motion.div
+            variants={staggerItem}
+            className="relative aspect-video overflow-hidden bg-cinema-card flex items-center justify-center"
+          >
+            <span className="text-lg md:text-xl lg:text-2xl tracking-widest uppercase font-bold text-white/30">
+              MORE TO COME
+            </span>
+          </motion.div>
         </motion.div>
 
         {/* Cursor-following info box (desktop only) */}
