@@ -233,15 +233,22 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
         })
       }
 
-      // Wait for enough data to play through
-      if (vid.readyState >= 3) {
+      // Use 'canplay' instead of 'canplaythrough' for broader browser support
+      // canplay fires when enough data is available to start playing
+      // canplaythrough may not fire with preload="metadata" on some browsers
+      const handleCanPlay = () => attemptPlay()
+
+      if (vid.readyState >= 2) {
+        // HAVE_CURRENT_DATA or higher - enough to start
         attemptPlay()
       } else {
-        vid.addEventListener('canplaythrough', attemptPlay, { once: true })
+        // Force load the video data then play when ready
+        vid.load()
+        vid.addEventListener('canplay', handleCanPlay, { once: true })
       }
 
       return () => {
-        vid.removeEventListener('canplaythrough', attemptPlay)
+        vid.removeEventListener('canplay', handleCanPlay)
       }
     }
   }, [isOpen, video])
