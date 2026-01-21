@@ -401,8 +401,8 @@ export default function Showcase() {
   const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 })
 
   // Transform mouse position to rotation (subtle tilt) - rotates TOWARD mouse
-  const rotateY = useTransform(smoothMouseX, [-1, 1], [2.75, -2.75])
-  const rotateX = useTransform(smoothMouseY, [-1, 1], [-1.75, 1.75])
+  const rotateY = useTransform(smoothMouseX, [-1, 1], [-2.75, 2.75])
+  const rotateX = useTransform(smoothMouseY, [-1, 1], [1.75, -1.75])
 
   useEffect(() => {
     const checkMobile = () => {
