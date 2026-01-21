@@ -44,7 +44,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ ...spring, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-serif text-white uppercase"
-            style={{ letterSpacing: '0.2em' }}
+            style={{ letterSpacing: '0.12em' }}
           >
             THE KINSHIP
           </motion.h1>
