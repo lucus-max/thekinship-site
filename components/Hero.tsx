@@ -92,7 +92,7 @@ export default function Hero() {
               transition={spring}
               className="px-10 py-4 border border-white/10 bg-transparent text-white text-sm tracking-widest uppercase font-bold hover:bg-cinema-card transition-colors duration-300"
             >
-              Start a Project
+              Get In Touch
             </motion.a>
           </motion.div>
         </div>
