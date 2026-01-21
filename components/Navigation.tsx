@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { navSlide, spring } from '@/lib/motion'
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +16,29 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
 
   return (
     <motion.nav
@@ -39,6 +63,7 @@ export default function Navigation() {
             </motion.div>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
             {['Work', 'Services', 'About'].map((item) => (
               <Link
@@ -62,8 +87,69 @@ export default function Navigation() {
               </Link>
             </motion.div>
           </div>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''}`} />
+            <span className={`block w-6 h-0.5 bg-white my-1 transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 top-20 bg-cinema-black/95 backdrop-blur-lg z-40 md:hidden"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="flex flex-col items-center justify-center h-full space-y-8 pb-20"
+            >
+              <Link
+                href="#work"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-2xl tracking-widest uppercase text-cinema-gold font-bold hover:text-white transition-colors duration-300"
+              >
+                View The Work
+              </Link>
+              <Link
+                href="#services"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-xl tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
+              >
+                Services
+              </Link>
+              <Link
+                href="#about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-xl tracking-widest uppercase text-white/70 hover:text-cinema-gold transition-colors duration-300"
+              >
+                About
+              </Link>
+              <Link
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-4 px-8 py-3 border border-white/10 bg-cinema-gold text-cinema-black text-lg tracking-widest uppercase font-bold hover:bg-transparent hover:text-cinema-gold transition-all duration-300"
+              >
+                Contact
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }

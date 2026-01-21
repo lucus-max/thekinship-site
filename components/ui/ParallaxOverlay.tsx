@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-// Pre-generate constellation data once
-const STAR_COUNT = 300
 const SEED = 42
 
 function seededRandom(s: number) {
@@ -12,35 +10,43 @@ function seededRandom(s: number) {
 }
 
 // Generate stars on sphere using fibonacci spiral
-const stars: { x: number; y: number; z: number; size: number }[] = []
-for (let i = 0; i < STAR_COUNT; i++) {
-  const phi = Math.acos(1 - 2 * (i + 0.5) / STAR_COUNT)
-  const theta = Math.PI * (1 + Math.sqrt(5)) * i
-  stars.push({
-    x: Math.sin(phi) * Math.cos(theta),
-    y: Math.sin(phi) * Math.sin(theta),
-    z: Math.cos(phi),
-    size: 1 + seededRandom(SEED + i) * 2,
-  })
+function generateStars(count: number) {
+  const stars: { x: number; y: number; z: number; size: number }[] = []
+  for (let i = 0; i < count; i++) {
+    const phi = Math.acos(1 - 2 * (i + 0.5) / count)
+    const theta = Math.PI * (1 + Math.sqrt(5)) * i
+    stars.push({
+      x: Math.sin(phi) * Math.cos(theta),
+      y: Math.sin(phi) * Math.sin(theta),
+      z: Math.cos(phi),
+      size: 1 + seededRandom(SEED + i) * 2,
+    })
+  }
+  return stars
 }
 
-// Pre-generate connections
-const connections: { from: number; to: number }[] = []
-for (let i = 0; i < stars.length; i++) {
-  for (let j = i + 1; j < stars.length; j++) {
-    const dx = stars[i].x - stars[j].x
-    const dy = stars[i].y - stars[j].y
-    const dz = stars[i].z - stars[j].z
-    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-    if (dist < 0.35 && seededRandom(SEED + i * 1000 + j) > 0.6) {
-      connections.push({ from: i, to: j })
+// Generate connections between nearby stars
+function generateConnections(stars: { x: number; y: number; z: number; size: number }[]) {
+  const connections: { from: number; to: number }[] = []
+  for (let i = 0; i < stars.length; i++) {
+    for (let j = i + 1; j < stars.length; j++) {
+      const dx = stars[i].x - stars[j].x
+      const dy = stars[i].y - stars[j].y
+      const dz = stars[i].z - stars[j].z
+      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+      if (dist < 0.35 && seededRandom(SEED + i * 1000 + j) > 0.6) {
+        connections.push({ from: i, to: j })
+      }
     }
   }
+  return connections
 }
 
 export default function ParallaxOverlay() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
+  const starsRef = useRef<{ x: number; y: number; z: number; size: number }[]>([])
+  const connectionsRef = useRef<{ from: number; to: number }[]>([])
   const stateRef = useRef({
     targetX: 0.5,
     targetY: 0.5,
@@ -57,6 +63,12 @@ export default function ParallaxOverlay() {
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    // Detect mobile and set star count accordingly
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
+    const starCount = isMobile ? 150 : 300
+    starsRef.current = generateStars(starCount)
+    connectionsRef.current = generateConnections(starsRef.current)
 
     // Set canvas size
     const resize = () => {
@@ -106,6 +118,9 @@ export default function ParallaxOverlay() {
 
       // Clear
       ctx.clearRect(0, 0, width, height)
+
+      const stars = starsRef.current
+      const connections = connectionsRef.current
 
       // Project all stars once
       const projected = stars.map(star => {
@@ -178,9 +193,34 @@ export default function ParallaxOverlay() {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
+    // Touch event handlers for mobile
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0]
+        const x = touch.clientX / window.innerWidth
+        const y = touch.clientY / window.innerHeight
+        state.velocityX = (x - state.targetX) * 3
+        state.velocityY = (y - state.targetY) * 3
+        state.targetX = x
+        state.targetY = y
+      }
+    }
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0]
+        state.targetX = touch.clientX / window.innerWidth
+        state.targetY = touch.clientY / window.innerHeight
+      }
+    }
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+
     return () => {
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchstart', handleTouchStart)
       if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
   }, [])

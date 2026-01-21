@@ -176,11 +176,9 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
       vid.volume = 1
       vid.muted = false
 
-      // Try to play unmuted, fallback to muted if browser blocks
       vid.play().then(() => {
         setIsMuted(false)
       }).catch(() => {
-        // Autoplay with sound was blocked, try muted
         vid.muted = true
         setIsMuted(true)
         vid.play()
@@ -240,7 +238,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
           onClick={onClose}
           onMouseMove={handleMouseMove}
         >
-          {/* Close button */}
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: showControls ? 1 : 0 }}
@@ -253,7 +250,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
             </svg>
           </motion.button>
 
-          {/* Video container */}
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -262,7 +258,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
             className="relative w-full max-w-[95vw] aspect-video"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Loading spinner */}
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-12 h-12 border-2 border-cinema-gold/30 border-t-cinema-gold rounded-full animate-spin" />
@@ -290,7 +285,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
               }}
             />
 
-            {/* Click to unmute overlay */}
             {isMuted && !isLoading && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -308,7 +302,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
               </motion.div>
             )}
 
-            {/* Custom minimal controls */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: showControls ? 1 : 0 }}
@@ -316,7 +309,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
               className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-cinema-black/80 to-transparent"
             >
               <div className="flex items-center gap-4">
-                {/* Mute/Unmute */}
                 <button
                   className="text-white/70 hover:text-white transition-colors"
                   onClick={(e) => {
@@ -341,7 +333,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
                   )}
                 </button>
 
-                {/* Progress bar */}
                 <div
                   ref={progressRef}
                   className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden cursor-pointer"
@@ -356,7 +347,6 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
                   />
                 </div>
 
-                {/* Fullscreen */}
                 <button
                   className="text-white/70 hover:text-white transition-colors"
                   onClick={(e) => {
@@ -377,104 +367,27 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
   )
 }
 
-function ProjectCard({ project, index, onPlayVideo }: { project: typeof projects[0], index: number, onPlayVideo: (video: string) => void }) {
-  const ref = useRef(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [isHovering, setIsHovering] = useState(false)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    })
-  }
-
-  return (
-    <motion.div
-      ref={ref}
-      variants={staggerItem}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      className="group relative"
-    >
-      {/* Thumbnail container */}
-      <div
-        ref={containerRef}
-        className="relative z-20 aspect-[16/9] overflow-hidden border border-white/10 bg-cinema-card cursor-none"
-        onClick={() => onPlayVideo(project.video)}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => {
-          setIsHovering(true)
-          // Preload video on hover
-          const link = document.createElement('link')
-          link.rel = 'preload'
-          link.as = 'video'
-          link.href = project.video
-          document.head.appendChild(link)
-        }}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        {/* Shimmer placeholder effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
-        <img
-          src={project.image}
-          alt={project.title}
-          loading="lazy"
-          className="relative w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        {/* Grain overlay for media */}
-        <div className="absolute inset-0 grain opacity-50 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-cinema-black via-cinema-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-      </div>
-
-      {/* Cursor-following View label - outside overflow container */}
-      <motion.div
-        className="absolute top-0 left-0 pointer-events-none z-30"
-        animate={{
-          opacity: isHovering ? 1 : 0,
-          scale: isHovering ? 1 : 0.8,
-          x: mousePos.x - 24,
-          y: mousePos.y - 12,
-        }}
-        transition={{
-          opacity: { duration: 0.15 },
-          scale: { duration: 0.15 },
-          x: { type: "spring", stiffness: 500, damping: 30 },
-          y: { type: "spring", stiffness: 500, damping: 30 }
-        }}
-      >
-        <span className="px-3 py-1.5 bg-cinema-gold text-cinema-black text-xs tracking-widest uppercase font-bold whitespace-nowrap">
-          View
-        </span>
-      </motion.div>
-
-      <div className="mt-6 space-y-3">
-        {/* Title: tracking-wide, uppercase, bold */}
-        <h3 className="text-2xl lg:text-3xl tracking-wide uppercase font-bold text-white group-hover:text-cinema-gold transition-colors duration-300">
-          {project.title}
-        </h3>
-
-        <p className="text-sm tracking-wide uppercase text-white/60">
-          {project.subtitle}
-        </p>
-
-        {/* Body: generous leading */}
-        <p className="text-base text-cinema-silver/80 leading-relaxed pt-2">
-          {project.description}
-        </p>
-      </div>
-    </motion.div>
-  )
-}
-
 export default function Showcase() {
   const ref = useRef(null)
+  const gridRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeVideo, setActiveVideo] = useState<string | null>(null)
+  const [hoveredProject, setHoveredProject] = useState<typeof projects[0] | null>(null)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePos({ x: e.clientX, y: e.clientY })
+  }
 
   return (
     <>
@@ -485,34 +398,101 @@ export default function Showcase() {
             variants={scrollReveal}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="mb-20"
+            className="mb-12"
           >
             <div className="flex items-center gap-6 mb-6">
               <div className="w-12 h-px bg-cinema-gold" />
-              <span className="text-xs tracking-widest uppercase text-cinema-gold">Featured Work</span>
             </div>
-            {/* Header: tracking-wide, uppercase, bold */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white max-w-4xl leading-tight whitespace-nowrap">
-              <span className="text-cinema-gold">CRAFTING</span> VISUAL STORIES
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white max-w-4xl leading-tight">
+              FEATURED WORK
             </h2>
           </motion.div>
-
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16"
-          >
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project.title}
-                project={project}
-                index={index}
-                onPlayVideo={setActiveVideo}
-              />
-            ))}
-          </motion.div>
         </div>
+
+        {/* Full-width tight grid */}
+        <motion.div
+          ref={gridRef}
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          onMouseMove={handleMouseMove}
+        >
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              variants={staggerItem}
+              className="relative aspect-video cursor-pointer overflow-hidden group"
+              onClick={() => setActiveVideo(project.video)}
+              onMouseEnter={() => {
+                if (!isMobile) {
+                  setHoveredProject(project)
+                  // Preload video
+                  const link = document.createElement('link')
+                  link.rel = 'preload'
+                  link.as = 'video'
+                  link.href = project.video
+                  document.head.appendChild(link)
+                }
+              }}
+              onMouseLeave={() => setHoveredProject(null)}
+            >
+              {/* Shimmer placeholder */}
+              <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
+
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+                className="relative w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-50"
+              />
+
+              {/* Grain overlay */}
+              <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
+
+              {/* Subtle vignette on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Mobile: Show title on thumbnail */}
+              {isMobile && (
+                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/90 to-transparent">
+                  <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate">
+                    {project.title}
+                  </h3>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Cursor-following info box (desktop only) */}
+        <AnimatePresence>
+          {hoveredProject && !isMobile && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.15 }}
+              className="fixed pointer-events-none z-50"
+              style={{
+                left: mousePos.x + 20,
+                top: mousePos.y + 20,
+              }}
+            >
+              <div className="bg-cinema-black/90 backdrop-blur-md border border-cinema-gold/30 p-5 max-w-xs">
+                <h3 className="text-lg font-bold text-cinema-gold uppercase tracking-wide mb-2">
+                  {hoveredProject.title}
+                </h3>
+                <p className="text-sm text-white/80 tracking-wide mb-2">
+                  {hoveredProject.subtitle}
+                </p>
+                <p className="text-xs text-white/50">
+                  {hoveredProject.description}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       <VideoModal

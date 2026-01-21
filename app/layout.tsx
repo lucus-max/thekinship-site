@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { PT_Serif_Caption } from 'next/font/google'
 import './globals.css'
 import SmoothScroll from '@/components/ui/SmoothScroll'
@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -30,7 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={ptSerifCaption.variable}>
-      <body className="font-serif antialiased cursor-none">
+      <body className="font-serif antialiased">
         <SmoothScroll>
           <CustomCursor />
           <ParallaxOverlay />
