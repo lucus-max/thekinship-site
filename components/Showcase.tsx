@@ -422,7 +422,10 @@ export default function Showcase() {
             <motion.div
               key={project.title}
               variants={staggerItem}
-              className="relative aspect-video cursor-pointer overflow-visible group transition-transform duration-700 ease-out hover:scale-[1.15] hover:z-10"
+              className="relative aspect-video cursor-pointer overflow-hidden group"
+              style={{ zIndex: 1 }}
+              whileHover={{ scale: 1.15, zIndex: 10 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
               onClick={() => setActiveVideo(project.video)}
               onMouseEnter={() => {
                 if (!isMobile) {
