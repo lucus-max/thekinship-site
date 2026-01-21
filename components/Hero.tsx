@@ -82,8 +82,16 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Gradient overlay - static, above parallax layers */}
+      {/* Gradient overlays - static, above parallax layers */}
       <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Top gradient - fades from black at top */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0.3) 20%, transparent 35%)'
+          }}
+        />
+        {/* Bottom gradient - fades to black at bottom */}
         <div
           className="absolute inset-0"
           style={{
