@@ -40,7 +40,7 @@ thekinship-site/
 │   └── page.tsx          # Main page assembling all sections
 ├── components/
 │   ├── Navigation.tsx    # Header nav - desktop links + mobile hamburger menu
-│   ├── Hero.tsx          # Landing - floatingman bg, logo, CTAs
+│   ├── Hero.tsx          # Landing - parallax layers, logo, CTAs
 │   ├── Showcase.tsx      # Video portfolio - tight grid + cursor-following info
 │   ├── Services.tsx      # "What I Do" - 3 cards + tool logos
 │   ├── About.tsx         # Philosophy - 3 value cards
@@ -116,13 +116,20 @@ thekinship-site/
   - 70% opacity black background with backdrop blur
   - Same links as desktop in same order
 
+### Hero.tsx
+- **Parallax layers:** Background (floatingman_bg.png) and foreground (floatingman_fg_v2.png)
+- **Background:** Moves opposite to mouse (±15px), 100% scale
+- **Foreground:** Moves with mouse (±30px), 110% scale, centered pivot
+- **Gradients:** Top fade (black→transparent) and bottom fade (transparent→black)
+- Disabled on mobile for performance
+
 ### Showcase.tsx
 - **Heading:** "WORK"
 - **Layout:** Tight grid with zero gaps
   - First 3 videos: 3 columns (featured row)
   - Remaining: 4 columns desktop, 3 tablet, 2 mobile
-- **3D Tilt Effect (desktop):** Entire grid subtly tilts toward mouse position (±2.75° Y, ±1.75° X)
-- **Hover animation:** Hovered tile pops forward (z: 60), non-hovered tiles fade to 50% opacity
+- **3D Tilt Effect (desktop):** Entire grid subtly tilts away from mouse position (±2.75° Y, ±1.75° X)
+- **Hover animation:** Hovered tile pops forward (z: 42 featured, z: 60 others), non-hovered tiles fade to 50% opacity
 - **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
 - **Mobile:** Title overlays bottom of each thumbnail
 - **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
@@ -145,6 +152,11 @@ thekinship-site/
 - Ideas First
 - Ethical AI
 - Partnership, Not Transactions
+
+### Contact.tsx
+- "Let's Create" heading with email CTA
+- Mailto link opens in separate window (target="_blank")
+- Email: info@thekinship.ai
 
 ## 7. Mobile Experience
 
@@ -200,16 +212,16 @@ thekinship-site/
 | Nissan Campaign | nissan.mp4 |
 | Volvo ES90 | volvo-es90.mp4 |
 | Nissan The Drop | nissan-the-drop.mp4 |
-| Deliveroo Ultimate Gift | deliveroo-ultimate-gift.mp4 |
-| Legoland Mythica | legoland-mythica.mp4 |
-| EE Gamer | ee-gamer.mp4 |
-| Stormzy Toxic Trait | stormzy-toxic-trait.mp4 |
-| Lego Titan | lego-titan.mp4 |
 | Sky F1 Titles | sky-f1-2023.mp4 |
-| Google Pixel | google-pixel.mp4 |
-| Lions Series Titles | lions-series-2021.mp4 |
 | Seat Idents | seat-idents.mp4 |
 | Three Phones Are Good | three-phones-are-good.mp4 |
+| Stormzy Toxic Trait | stormzy-toxic-trait.mp4 |
+| Lego Titan | lego-titan.mp4 |
+| Deliveroo Ultimate Gift | deliveroo-ultimate-gift.mp4 |
+| Google Pixel | google-pixel.mp4 |
+| Lions Series Titles | lions-series-2021.mp4 |
+| Legoland Mythica | legoland-mythica.mp4 |
+| EE Gamer | ee-gamer.mp4 |
 | Cadburys Fingers | cadburys-fingers.mp4 |
 | Nike KDI | nike-kdi.mp4 |
 | VW GTE | vw-gte.mp4 |
@@ -260,3 +272,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 |---------|-------------|
 | v1.1 | Base site with all 19 videos, constellation overlay, mobile support |
 | v1.2 | 3D grid tilt, hover pop-forward effect, compact mobile nav dropdown, mobile constellation refinements |
+| v1.3 | Hero parallax layers, video reordering, grid tilt inversion, mailto opens in new window |
