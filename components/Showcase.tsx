@@ -422,7 +422,7 @@ export default function Showcase() {
             <motion.div
               key={project.title}
               variants={staggerItem}
-              className="relative aspect-video cursor-pointer overflow-hidden group"
+              className="relative aspect-video cursor-pointer overflow-visible group transition-transform duration-700 ease-out hover:scale-[1.15] hover:z-10"
               onClick={() => setActiveVideo(project.video)}
               onMouseEnter={() => {
                 if (!isMobile) {
@@ -444,7 +444,7 @@ export default function Showcase() {
                 src={project.image}
                 alt={project.title}
                 loading="lazy"
-                className="relative w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.15]"
+                className="relative w-full h-full object-cover"
               />
 
               {/* Grain overlay */}
