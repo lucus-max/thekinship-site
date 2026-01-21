@@ -22,7 +22,7 @@ export default function About() {
           >
             <div className="flex items-center gap-6 mb-8">
               <div className="w-12 h-px bg-cinema-gold" />
-              <span className="text-xs tracking-widest uppercase text-cinema-gold">My Philosophy</span>
+              <span className="text-xs tracking-widest uppercase text-cinema-gold">Creativity, Amplified.</span>
             </div>
 
             {/* Header: tracking-wide, uppercase, bold */}
