@@ -615,6 +615,7 @@ export default function Showcase() {
                       z: isHovered ? 42 : 0,
                       zIndex: isHovered ? 10 : 1,
                       opacity: isAdjacent ? 0.65 : 1,
+                      boxShadow: isHovered ? 'inset 0 0 0 2px #D4AF37' : 'inset 0 0 0 2px transparent',
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -680,6 +681,7 @@ export default function Showcase() {
                       z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
                       opacity: isAdjacent ? 0.65 : 1,
+                      boxShadow: isHovered ? 'inset 0 0 0 2px #D4AF37' : 'inset 0 0 0 2px transparent',
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
