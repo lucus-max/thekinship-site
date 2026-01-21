@@ -485,7 +485,7 @@ export default function Showcase() {
                     animate={{
                       rotateX: 0,
                       rotateY: 0,
-                      z: isHovered ? 60 : 0,
+                      z: isHovered ? 42 : 0,
                       zIndex: isHovered ? 10 : 1,
                       opacity: anotherIsHovered ? 0.5 : 1,
                     }}
