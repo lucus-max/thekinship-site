@@ -57,7 +57,7 @@ export default function Hero() {
             transition={{ delay: 1.8 }}
             className="overflow-hidden text-center"
           >
-            <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto leading-relaxed">
+            <p className="text-2xl md:text-3xl lg:text-4xl text-white max-w-3xl mx-auto leading-relaxed">
               25 years of Generation.
             </p>
           </motion.div>
