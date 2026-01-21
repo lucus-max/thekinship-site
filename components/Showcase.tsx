@@ -615,7 +615,6 @@ export default function Showcase() {
                       z: isHovered ? 42 : 0,
                       zIndex: isHovered ? 10 : 1,
                       opacity: isAdjacent ? 0.65 : 1,
-                      boxShadow: isHovered ? 'inset 0 0 0 2px #D4AF37' : 'inset 0 0 0 2px transparent',
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -636,6 +635,12 @@ export default function Showcase() {
                     />
                     <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
                     <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <motion.div
+                      className="absolute inset-0 pointer-events-none z-20"
+                      animate={{ opacity: isHovered ? 1 : 0 }}
+                      transition={{ duration: 0.7, ease: "easeOut" }}
+                      style={{ border: '2px solid #D4AF37' }}
+                    />
                     {isMobile && (
                       <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
                         <h3 className="text-xs sm:text-sm font-bold text-cinema-gold uppercase tracking-wide">
@@ -681,7 +686,6 @@ export default function Showcase() {
                       z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
                       opacity: isAdjacent ? 0.65 : 1,
-                      boxShadow: isHovered ? 'inset 0 0 0 2px #D4AF37' : 'inset 0 0 0 2px transparent',
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -702,6 +706,12 @@ export default function Showcase() {
                     />
                     <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
                     <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <motion.div
+                      className="absolute inset-0 pointer-events-none z-20"
+                      animate={{ opacity: isHovered ? 1 : 0 }}
+                      transition={{ duration: 0.7, ease: "easeOut" }}
+                      style={{ border: '2px solid #D4AF37' }}
+                    />
                     {isMobile && (
                       <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-cinema-black/95 via-cinema-black/70 to-transparent">
                         <h3 className="text-[10px] sm:text-xs font-bold text-cinema-gold uppercase tracking-wide truncate">
