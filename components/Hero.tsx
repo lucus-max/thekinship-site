@@ -42,11 +42,11 @@ export default function Hero() {
           <motion.h1
             initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ ...spring, delay: 0.2 }}
+            transition={{ ...spring, delay: 0.6 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-serif text-white uppercase"
-            style={{ letterSpacing: '0.20em' }}
+            style={{ letterSpacing: '0.14em' }}
           >
-            THE KI<span style={{ letterSpacing: '0.16em' }}>N</span><span style={{ letterSpacing: '0.16em' }}>S</span>HIP
+            THE KI<span style={{ letterSpacing: '0.11em' }}>N</span><span style={{ letterSpacing: '0.11em' }}>S</span>HIP
           </motion.h1>
 
           {/* Body: high readability, generous leading */}
@@ -54,7 +54,7 @@ export default function Hero() {
             variants={clipReveal}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 1.8 }}
             className="overflow-hidden text-center"
           >
             <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto leading-relaxed">
@@ -66,7 +66,7 @@ export default function Hero() {
             variants={fadeUpBlur}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 2.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4"
           >
             <motion.a
@@ -96,7 +96,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ ...spring, delay: 1.2 }}
+        transition={{ ...spring, delay: 3.6 }}
         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"
       >
         <div className="flex flex-col items-center gap-2">
