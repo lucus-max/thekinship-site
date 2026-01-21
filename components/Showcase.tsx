@@ -11,7 +11,7 @@ const projects = [
     description: 'A foundation of creative direction, VFX supervision, compositing and design across commercials and branded content.',
     category: 'Legacy Work',
     image: '/media/vfx-showreel.png',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/Showreel_2025_Exported.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/Showreel_2025_Exported.mp4',
   },
   {
     title: 'AI LAUNCH FILM',
@@ -19,7 +19,7 @@ const projects = [
     description: 'We are still cavemen in this new age. A short piece generated locally at 2K resolution using ethical, open-source AI models.',
     category: 'Generative AI',
     image: '/media/ai-film.png',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/ai-film.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/ai-film.mp4',
   },
   {
     title: 'NISSAN CAMPAIGN',
@@ -35,7 +35,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/volvo-es90.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/volvo-es90.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/volvo-es90.mp4',
   },
   {
     title: 'NISSAN THE DROP',
@@ -43,7 +43,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/nissan-the-drop.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/nissan-the-drop.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/nissan-the-drop.mp4',
   },
   {
     title: 'DELIVEROO THE ULTIMATE GIFT',
@@ -51,7 +51,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/deliveroo-ultimate-gift.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/deliveroo-ultimate-gift.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/deliveroo-ultimate-gift.mp4',
   },
   {
     title: 'LEGOLAND MYTHICA',
@@ -59,7 +59,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/legoland-mythica.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/legoland-mythica.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/legoland-mythica.mp4',
   },
   {
     title: 'EE GAMER',
@@ -67,7 +67,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/ee-gamer.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/ee-gamer.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/ee-gamer.mp4',
   },
   {
     title: 'STORMZY TOXIC TRAIT',
@@ -75,7 +75,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/stormzy-toxic-trait.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/stormzy-toxic-trait.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/stormzy-toxic-trait.mp4',
   },
   {
     title: 'LEGO TITAN',
@@ -83,7 +83,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/lego-titan.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/lego-titan.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/lego-titan.mp4',
   },
   {
     title: 'SKY F1 TITLES',
@@ -91,7 +91,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/sky-f1-2023.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/sky-f1-2023.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/sky-f1-2023.mp4',
   },
   {
     title: 'GOOGLE PIXEL',
@@ -99,7 +99,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/google-pixel.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/google-pixel.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/google-pixel.mp4',
   },
   {
     title: 'LIONS SERIES TITLES',
@@ -107,7 +107,7 @@ const projects = [
     description: 'Coffee & TV',
     category: 'Brand Work',
     image: '/media/lions-series-2021.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/lions-series-2021.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/lions-series-2021.mp4',
   },
   {
     title: 'SEAT IDENTS',
@@ -115,7 +115,7 @@ const projects = [
     description: 'Time Based Arts',
     category: 'Brand Work',
     image: '/media/seat-idents.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/seat-idents.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/seat-idents.mp4',
   },
   {
     title: 'THREE PHONES ARE GOOD',
@@ -123,7 +123,7 @@ const projects = [
     description: 'Time Based Arts',
     category: 'Brand Work',
     image: '/media/three-phones-are-good.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/three-phones-are-good.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/three-phones-are-good.mp4',
   },
   {
     title: 'CADBURYS FINGERS',
@@ -131,7 +131,7 @@ const projects = [
     description: 'Time Based Arts',
     category: 'Brand Work',
     image: '/media/cadburys-fingers.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/cadburys-fingers.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/cadburys-fingers.mp4',
   },
   {
     title: 'NIKE KDI',
@@ -139,7 +139,7 @@ const projects = [
     description: 'Time based Arts',
     category: 'Brand Work',
     image: '/media/nike-kdi.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/nike-kdi.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/nike-kdi.mp4',
   },
   {
     title: 'VW GTE',
@@ -147,7 +147,7 @@ const projects = [
     description: 'Time based Arts',
     category: 'Brand Work',
     image: '/media/vw-gte.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/vw-gte.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/vw-gte.mp4',
   },
   {
     title: 'THREE MAKE IT RIGHT',
@@ -155,7 +155,7 @@ const projects = [
     description: 'Time Based Arts',
     category: 'Brand Work',
     image: '/media/three-make-it-right.jpg',
-    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/three-make-it-right.mov',
+    video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/video/three-make-it-right.mp4',
   },
 ]
 
