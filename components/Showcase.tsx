@@ -130,7 +130,7 @@ const projects = [
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Coffee & TV',
     category: 'Brand Work',
-    image: '/media/deliveroo-ultimate-gift.jpg',
+    image: '/media/deliveroo-ultimate-gift.png',
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/deliveroo-ultimate-gift.mp4',
   },
   {
