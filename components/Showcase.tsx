@@ -469,7 +469,7 @@ export default function Showcase() {
             variants={staggerItem}
             className="relative aspect-video overflow-hidden bg-cinema-card flex items-center justify-center"
           >
-            <span className="text-lg md:text-xl lg:text-2xl tracking-widest uppercase font-bold text-white/30">
+            <span className="text-lg md:text-xl lg:text-2xl tracking-widest uppercase font-bold text-cinema-gold">
               MORE TO COME
             </span>
           </motion.div>
