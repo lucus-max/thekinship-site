@@ -444,7 +444,7 @@ export default function Showcase() {
                 src={project.image}
                 alt={project.title}
                 loading="lazy"
-                className="relative w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-50"
+                className="relative w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.15]"
               />
 
               {/* Grain overlay */}
