@@ -110,31 +110,31 @@ thekinship-site/
 
 ### Navigation.tsx
 - Fixed header with glassmorphism on scroll
-- **Desktop:** Horizontal links (Work, Services, About, Contact)
-- **Mobile:** Hamburger menu with full-screen overlay
-  - "View The Work" prominently featured in gold
-  - Animated open/close with body scroll lock
+- **Desktop:** Horizontal links (Services, Work, About, Contact button)
+- **Mobile:** Hamburger menu with compact dropdown (not full-screen)
+  - Animates from top-right corner
+  - 70% opacity black background with backdrop blur
+  - Same links as desktop in same order
 
 ### Showcase.tsx
-- **Heading:** "FEATURED WORK"
+- **Heading:** "WORK"
 - **Layout:** Tight grid with zero gaps
-  - Desktop: 4 columns
-  - Tablet: 3 columns
-  - Mobile: 2 columns
-- **Hover animation:** Tiles scale up 15% with Framer Motion (0.7s ease-out), z-index boost
+  - First 3 videos: 3 columns (featured row)
+  - Remaining: 4 columns desktop, 3 tablet, 2 mobile
+- **3D Tilt Effect (desktop):** Entire grid subtly tilts toward mouse position (±2.75° Y, ±1.75° X)
+- **Hover animation:** Hovered tile pops forward (z: 60), non-hovered tiles fade to 50% opacity
 - **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
 - **Mobile:** Title overlays bottom of each thumbnail
 - **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
 - **Performance:** Preloads video on hover
-- **"MORE TO COME":** Final grid slot with centered gold text placeholder
 
 ### ParallaxOverlay.tsx
 - 3D constellation sphere rendered on Canvas
 - **Desktop:** 300 stars, mouse-reactive rotation
-- **Mobile:** 150 stars (performance), touch-reactive rotation
+- **Mobile:** 150 stars, touch-reactive rotation, 50% smaller dots, 40% less opacity
 - Edge vignette effect (stronger opacity at screen edges)
 - Gold color (#D4AF37) matching site branding
-- z-index: 0 (behind content)
+- z-index: 1 (above background, below content)
 
 ### Services.tsx (What I Do)
 1. **Creative Direction** - Concept, Story, Brand, Execution
@@ -154,11 +154,13 @@ thekinship-site/
 
 ### Navigation
 - Hamburger menu (3 animated lines → X)
-- Full-screen overlay with centered links
-- Body scroll locked when menu open
+- Compact dropdown from top-right (not full-screen)
+- 70% opacity background, backdrop blur
+- Same links as desktop: Services, Work, About, Contact
 
 ### Constellation Overlay
 - Reduced to 150 stars for performance
+- 50% smaller dots, 40% less opacity than desktop
 - Touch event support (touchstart, touchmove)
 - Responds to finger movement like mouse on desktop
 
@@ -251,3 +253,10 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 - Check viewport meta in layout.tsx
 - Verify touch events in ParallaxOverlay.tsx
 - Test hamburger menu on real device
+
+## 12. Version History
+
+| Version | Description |
+|---------|-------------|
+| v1.1 | Base site with all 19 videos, constellation overlay, mobile support |
+| v1.2 | 3D grid tilt, hover pop-forward effect, compact mobile nav dropdown, mobile constellation refinements |
