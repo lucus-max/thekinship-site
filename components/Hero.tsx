@@ -74,7 +74,7 @@ export default function Hero() {
         }}
       >
         <Image
-          src="/media/floatingman_fg.png"
+          src="/media/floatingman_fg_v2.png"
           alt=""
           fill
           priority
