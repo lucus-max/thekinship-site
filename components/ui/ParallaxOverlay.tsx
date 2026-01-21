@@ -144,22 +144,26 @@ export default function ParallaxOverlay() {
         const dy = py - centerY
         const dist = Math.sqrt(dx * dx + dy * dy)
         const normalizedDist = dist / maxDist
-        // Boost from 0.4 at center to 1.0 at edges
-        return 0.4 + normalizedDist * 0.6
+        // Opacity boost from 0.4 at center to 1.0 at edges
+        // Size boost from 1.0 at center to 1.3 at edges (30% larger)
+        return {
+          opacity: 0.4 + normalizedDist * 0.6,
+          size: 1.0 + normalizedDist * 0.3
+        }
       }
 
       // Draw connections
       ctx.strokeStyle = '#D4AF37'
-      ctx.lineWidth = 0.5
       for (const conn of connections) {
         const from = projected[conn.from]
         const to = projected[conn.to]
         const midX = (from.x + to.x) / 2
         const midY = (from.y + to.y) / 2
         const edgeBoost = getEdgeBoost(midX, midY)
-        const opacity = Math.min(from.depth, to.depth) * 0.5 * edgeBoost
+        const opacity = Math.min(from.depth, to.depth) * 0.5 * edgeBoost.opacity
         if (opacity > 0.05) {
           ctx.globalAlpha = opacity
+          ctx.lineWidth = 0.5 * edgeBoost.size
           ctx.beginPath()
           ctx.moveTo(from.x, from.y)
           ctx.lineTo(to.x, to.y)
@@ -171,9 +175,9 @@ export default function ParallaxOverlay() {
       ctx.fillStyle = '#D4AF37'
       for (const p of projected) {
         const edgeBoost = getEdgeBoost(p.x, p.y)
-        ctx.globalAlpha = (0.3 + p.depth * 0.7) * edgeBoost
+        ctx.globalAlpha = (0.3 + p.depth * 0.7) * edgeBoost.opacity
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.arc(p.x, p.y, p.size * edgeBoost.size, 0, Math.PI * 2)
         ctx.fill()
       }
 
