@@ -18,7 +18,7 @@ function generateTileRotations(count: number) {
   }))
 }
 
-// Get adjacent tile indices (left, right, above, below) within a grid
+// Get adjacent tile indices (including diagonals) within a grid
 function getAdjacentIndices(index: number, totalCount: number, columns: number): Set<number> {
   const adjacent = new Set<number>()
   const row = Math.floor(index / columns)
@@ -32,6 +32,14 @@ function getAdjacentIndices(index: number, totalCount: number, columns: number):
   if (row > 0) adjacent.add(index - columns)
   // Below
   if (index + columns < totalCount) adjacent.add(index + columns)
+  // Top-left
+  if (row > 0 && col > 0) adjacent.add(index - columns - 1)
+  // Top-right
+  if (row > 0 && col < columns - 1) adjacent.add(index - columns + 1)
+  // Bottom-left
+  if (index + columns < totalCount && col > 0) adjacent.add(index + columns - 1)
+  // Bottom-right
+  if (index + columns < totalCount && col < columns - 1 && index + columns + 1 < totalCount) adjacent.add(index + columns + 1)
 
   return adjacent
 }
