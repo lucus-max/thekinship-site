@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import Image from 'next/image'
 import { scrollReveal, spring, staggerItem } from '@/lib/motion'
 
 export default function About() {
@@ -22,7 +23,6 @@ export default function About() {
           >
             <div className="flex items-center gap-6 mb-8">
               <div className="w-12 h-px bg-cinema-gold" />
-              <span className="text-xs tracking-widest uppercase text-cinema-gold">Creativity, Amplified.</span>
             </div>
 
             {/* Header: tracking-wide, uppercase, bold */}
@@ -94,6 +94,24 @@ export default function About() {
             ))}
           </div>
         </div>
+
+        {/* Tech stack logos */}
+        <motion.div
+          variants={scrollReveal}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="mt-24 pt-16 border-t border-white/10"
+        >
+          <p className="text-sm tracking-widest uppercase text-white/40 text-center mb-12">
+            Powered By Industry-Leading Tools
+          </p>
+          <div className="flex justify-center items-center gap-12 md:gap-20 py-8 px-6">
+            <Image src="/logos/comfyui.webp" alt="Comfy UI" width={120} height={120} className="w-20 h-20 object-contain" />
+            <Image src="/logos/weavy.jpg" alt="Weavy" width={120} height={120} className="w-20 h-20 object-contain" />
+            <Image src="/logos/nuke.jpg" alt="Nuke" width={120} height={120} className="w-20 h-20 object-contain" />
+            <Image src="/logos/davinci.jpg" alt="DaVinci Resolve" width={120} height={120} className="w-20 h-20 object-contain" />
+          </div>
+        </motion.div>
       </div>
     </section>
   )

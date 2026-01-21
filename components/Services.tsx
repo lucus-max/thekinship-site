@@ -2,7 +2,6 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import Image from 'next/image'
 import { scrollReveal, spring, staggerContainer, staggerItem } from '@/lib/motion'
 
 const services = [
@@ -107,24 +106,6 @@ export default function Services() {
           {services.map((service, index) => (
             <ServiceCard key={service.number} service={service} index={index} />
           ))}
-        </motion.div>
-
-        {/* Tech stack logos */}
-        <motion.div
-          variants={scrollReveal}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="mt-24 pt-16 border-t border-white/10"
-        >
-          <p className="text-sm tracking-widest uppercase text-white/40 text-center mb-12">
-            Powered By Industry-Leading Tools
-          </p>
-          <div className="flex justify-center items-center gap-12 md:gap-20 py-8 px-6">
-            <Image src="/logos/comfyui.webp" alt="Comfy UI" width={120} height={120} className="w-20 h-20 object-contain" />
-            <Image src="/logos/weavy.jpg" alt="Weavy" width={120} height={120} className="w-20 h-20 object-contain" />
-            <Image src="/logos/nuke.jpg" alt="Nuke" width={120} height={120} className="w-20 h-20 object-contain" />
-            <Image src="/logos/davinci.jpg" alt="DaVinci Resolve" width={120} height={120} className="w-20 h-20 object-contain" />
-          </div>
         </motion.div>
       </div>
     </section>
