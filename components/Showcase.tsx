@@ -409,16 +409,65 @@ export default function Showcase() {
           </motion.div>
         </div>
 
-        {/* Full-width tight grid */}
+        {/* First 3 featured videos - full width */}
         <motion.div
           ref={gridRef}
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="flex flex-col"
+          onMouseMove={handleMouseMove}
+        >
+          {projects.slice(0, 3).map((project, index) => (
+            <motion.div
+              key={project.title}
+              variants={staggerItem}
+              className="relative aspect-video cursor-pointer overflow-hidden group"
+              style={{ zIndex: 1 }}
+              whileHover={{ scale: 1.02, zIndex: 10 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              onClick={() => setActiveVideo(project.video)}
+              onMouseEnter={() => {
+                if (!isMobile) {
+                  setHoveredProject(project)
+                  const link = document.createElement('link')
+                  link.rel = 'preload'
+                  link.as = 'video'
+                  link.href = project.video
+                  document.head.appendChild(link)
+                }
+              }}
+              onMouseLeave={() => setHoveredProject(null)}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+                className="relative w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {isMobile && (
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-cinema-black/90 to-transparent">
+                  <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wide">
+                    {project.title}
+                  </h3>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Remaining videos - tight grid */}
+        <motion.div
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
           onMouseMove={handleMouseMove}
         >
-          {projects.map((project, index) => (
+          {projects.slice(3).map((project, index) => (
             <motion.div
               key={project.title}
               variants={staggerItem}
@@ -430,7 +479,6 @@ export default function Showcase() {
               onMouseEnter={() => {
                 if (!isMobile) {
                   setHoveredProject(project)
-                  // Preload video
                   const link = document.createElement('link')
                   link.rel = 'preload'
                   link.as = 'video'
@@ -440,23 +488,15 @@ export default function Showcase() {
               }}
               onMouseLeave={() => setHoveredProject(null)}
             >
-              {/* Shimmer placeholder */}
               <div className="absolute inset-0 bg-gradient-to-r from-cinema-card via-cinema-charcoal to-cinema-card animate-pulse" />
-
               <img
                 src={project.image}
                 alt={project.title}
                 loading="lazy"
                 className="relative w-full h-full object-cover"
               />
-
-              {/* Grain overlay */}
               <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
-
-              {/* Subtle vignette on hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              {/* Mobile: Show title on thumbnail */}
               {isMobile && (
                 <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-cinema-black/90 to-transparent">
                   <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate">
