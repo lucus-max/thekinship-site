@@ -11,7 +11,7 @@ export default function Hero() {
       {/* Background image with bottom gradient blend - below constellation */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/media/floatingman.png"
+          src="/media/floatingman.jpg"
           alt=""
           fill
           priority
