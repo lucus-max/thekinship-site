@@ -18,9 +18,9 @@ export default function Hero() {
   const bgX = useTransform(smoothMouseX, [-1, 1], [-15, 15])
   const bgY = useTransform(smoothMouseY, [-1, 1], [-10, 10])
 
-  // Foreground (man) layer - more movement
-  const fgX = useTransform(smoothMouseX, [-1, 1], [30, -30])
-  const fgY = useTransform(smoothMouseY, [-1, 1], [20, -20])
+  // Foreground (man) layer - more movement (30% increased from base 30/20)
+  const fgX = useTransform(smoothMouseX, [-1, 1], [39, -39])
+  const fgY = useTransform(smoothMouseY, [-1, 1], [26, -26])
 
   useEffect(() => {
     const checkMobile = () => {
@@ -170,12 +170,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - always centered */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ ...spring, delay: 3.6 }}
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"
+        className="absolute bottom-4 left-0 right-0 z-20 flex justify-center"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-xs tracking-widest uppercase text-white/50">Scroll</span>

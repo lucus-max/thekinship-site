@@ -116,7 +116,8 @@ export default function ParallaxOverlay() {
       const height = window.innerHeight
       const centerX = width / 2
       const centerY = height / 2
-      const scale = Math.min(width, height) * 0.78
+      // Scale sphere to be 15% larger than screen diagonal (ensures no visible edges)
+      const scale = Math.sqrt(width * width + height * height) * 0.575
 
       // Mobile: 50% smaller dots, 40% less opacity
       const mobileSizeMultiplier = state.isMobile ? 0.5 : 1.0

@@ -25,18 +25,15 @@ export default function About() {
               <div className="w-12 h-px bg-cinema-gold" />
             </div>
 
-            {/* Header: tracking-wide, uppercase, bold */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white leading-tight mb-8">
-              HUMAN CREATIVITY, <span className="text-cinema-gold">AMPLIFIED</span>
+            {/* Header: tracking-wide, uppercase, bold - 30% larger */}
+            <h2 className="text-5xl md:text-6xl lg:text-7xl tracking-wide uppercase font-bold text-white leading-tight mb-8">
+              Human-led, <span className="text-cinema-gold">high-end content.</span>
             </h2>
 
             {/* Body: generous leading */}
             <div className="space-y-6 text-cinema-silver/80">
               <p className="text-lg leading-relaxed">
-                At the intersection of artistry and innovation, I believe the most powerful creative work emerges when human vision guides intelligent tools.
-              </p>
-              <p className="text-lg leading-relaxed">
-                With 25 years in VFX, compositing, and creative direction across commercials and branded content, I'm embracing the integration of generative AI into creative workflows.
+                I've spent two decades directing and supervising for major brands. Now, I'm using generative tools to take it further. 25 years of knowledge. Now powered by AI.
               </p>
             </div>
 
@@ -69,8 +66,8 @@ export default function About() {
                 description: 'I can work locally and securely with open-source, ethically-trained models, or adapt to your individual AI tools and workflows. Your data stays secure.',
               },
               {
-                title: 'PARTNERSHIP, NOT TRANSACTIONS',
-                description: 'I embed myself in your creative process, becoming an extension of your team.',
+                title: 'TEAM, NOT TRANSACTIONS',
+                description: 'More partner, less vendor. I work best when we\'re dreaming up ideas together. I\'m here to be a seamless extension of your creative flow.',
               },
             ].map((value, index) => (
               <motion.div
@@ -103,7 +100,7 @@ export default function About() {
           className="mt-24 pt-16 border-t border-white/10"
         >
           <p className="text-sm tracking-widest uppercase text-white/40 text-center mb-12">
-            Powered By Industry-Leading Tools
+            Powered By
           </p>
           <div className="flex justify-center items-center gap-12 md:gap-20 py-8 px-6">
             <Image src="/logos/comfyui.webp" alt="Comfy UI" width={120} height={120} className="w-20 h-20 object-contain" />
