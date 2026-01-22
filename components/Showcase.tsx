@@ -716,13 +716,13 @@ export default function Showcase() {
               {projects.slice(0, 3).map((project, index) => {
                 const isHovered = hoveredIndex === index
                 const isAdjacent = adjacentTiles.has(index)
-                // Desktop: Three-tier opacity (hovered 100%, adjacent 70%, others 50%)
-                // When not hovering on grid: all tiles at 70%
-                // Mobile: Scroll-based opacity gradient
-                const tileOpacity = isMobile
+                // Desktop: Three-tier brightness (hovered 100%, adjacent 70%, others 50%)
+                // When not hovering on grid: all tiles at 80%
+                // Mobile: Scroll-based brightness gradient
+                const tileBrightness = isMobile
                   ? mobileOpacities[index]
                   : (hoveredIndex === null ? 0.8 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
-                // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
+                // Z correlates with brightness: hovered 100%, adjacent 70%, others 0%
                 // Mobile: scroll-based z movement
                 const maxZ = 42
                 const tileZ = isMobile ? mobileZValues[index] : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
@@ -739,7 +739,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: tileZ,
                       zIndex: isHovered ? 10 : (isAdjacent ? 5 : 1),
-                      opacity: tileOpacity,
+                      filter: `brightness(${tileBrightness})`,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -797,13 +797,13 @@ export default function Showcase() {
                 const globalIndex = index + 3 // Offset by first 3
                 const isHovered = hoveredIndex === globalIndex
                 const isAdjacent = adjacentTiles.has(globalIndex)
-                // Desktop: Three-tier opacity (hovered 100%, adjacent 70%, others 50%)
-                // When not hovering on grid: all tiles at 70%
-                // Mobile: Scroll-based opacity gradient
-                const tileOpacity = isMobile
+                // Desktop: Three-tier brightness (hovered 100%, adjacent 70%, others 50%)
+                // When not hovering on grid: all tiles at 80%
+                // Mobile: Scroll-based brightness gradient
+                const tileBrightness = isMobile
                   ? mobileOpacities[globalIndex]
                   : (hoveredIndex === null ? 0.8 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
-                // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
+                // Z correlates with brightness: hovered 100%, adjacent 70%, others 0%
                 // Mobile: scroll-based z movement
                 const maxZ = 60
                 const tileZ = isMobile ? mobileZValues[globalIndex] : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
@@ -820,7 +820,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: tileZ,
                       zIndex: isHovered ? 10 : (isAdjacent ? 5 : 1),
-                      opacity: tileOpacity,
+                      filter: `brightness(${tileBrightness})`,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
