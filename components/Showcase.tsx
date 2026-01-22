@@ -655,7 +655,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: isHovered ? 42 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: isAdjacent ? 0.65 : 1,
+                      opacity: isAdjacent ? 0.3 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -726,7 +726,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: isAdjacent ? 0.65 : 1,
+                      opacity: isAdjacent ? 0.3 : 1,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
