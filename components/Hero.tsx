@@ -12,9 +12,9 @@ export default function Hero() {
   // Scroll tracking for parallax
   const { scrollY } = useScroll()
 
-  // Scroll-based parallax - fg moves faster than bg for depth effect
-  const scrollBgY = useTransform(scrollY, [0, 1000], [0, 150])
-  const scrollFgY = useTransform(scrollY, [0, 1000], [0, 300])
+  // Scroll-based parallax - inverted (scroll down = move up) for depth effect
+  const scrollBgY = useTransform(scrollY, [0, 1000], [0, -150])
+  const scrollFgY = useTransform(scrollY, [0, 1000], [0, -300])
 
   // Mouse tracking for parallax
   const mouseX = useMotionValue(0)
