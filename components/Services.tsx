@@ -54,7 +54,7 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
             <div key={i} className="flex items-center gap-3">
               <div className="w-1.5 h-1.5 bg-cinema-gold" />
               <span className="text-sm text-white/60 tracking-wide">{highlight}</span>
-              <div className="w-1.5 h-1.5 bg-cinema-gold" />
+              <div className="w-1.5 h-1.5 bg-cinema-gold md:hidden" />
             </div>
           ))}
         </div>
