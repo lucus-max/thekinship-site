@@ -213,11 +213,11 @@ function LogoWireframe({ heroRef }: {
   }, [cursorPos, isActive, revealRadius])
 
   // Convert wireframe percentage to actual hero coordinates
-  // Scale x by 1.2 around center (50%), offset 50px right
+  // Scale x by 1.2 around center (50%), offset 75px right
   const toHeroCoords = useCallback((xPct: number, yPct: number) => {
     const scaledX = 50 + (xPct - 50) * 1.2 // Scale around center
     return {
-      x: logoRect.x + (scaledX / 100) * logoRect.width + 50,
+      x: logoRect.x + (scaledX / 100) * logoRect.width + 75,
       y: logoRect.y + (yPct / 100) * logoRect.height
     }
   }, [logoRect])
