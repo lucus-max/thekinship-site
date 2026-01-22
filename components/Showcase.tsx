@@ -514,6 +514,7 @@ export default function Showcase() {
   const [grid1Cols, setGrid1Cols] = useState(3)
   const [grid2Cols, setGrid2Cols] = useState(4)
   const [mobileOpacities, setMobileOpacities] = useState<number[]>(new Array(projects.length).fill(1))
+  const [mobileZValues, setMobileZValues] = useState<number[]>(new Array(projects.length).fill(0))
 
   // Scroll tracking for mobile opacity gradient
   const { scrollY } = useScroll()
@@ -600,34 +601,59 @@ export default function Showcase() {
     }
   }, [isMobile, mouseX, mouseY])
 
-  // Mobile scroll-based opacity gradient effect
+  // Mobile scroll-based opacity and z gradient effect
   const updateMobileOpacities = useCallback(() => {
     if (!isMobile) return
 
     const viewportHeight = window.innerHeight
-    // Sweet spot is just above center (45% from top)
-    const sweetSpotY = viewportHeight * 0.45
+    // Sweet zone: 25% to 50% from top (the 25% area above centerline)
+    const sweetZoneTop = viewportHeight * 0.25
+    const sweetZoneBottom = viewportHeight * 0.50
+    const sweetZoneCenter = (sweetZoneTop + sweetZoneBottom) / 2
 
-    const newOpacities = tileRefs.current.map((tileRef) => {
-      if (!tileRef) return 1
+    const newOpacities: number[] = []
+    const newZValues: number[] = []
+    const maxZ = 20 // Max z-movement for mobile
+
+    tileRefs.current.forEach((tileRef) => {
+      if (!tileRef) {
+        newOpacities.push(0.5)
+        newZValues.push(0)
+        return
+      }
 
       const rect = tileRef.getBoundingClientRect()
       const tileCenter = rect.top + rect.height / 2
 
-      // Calculate distance from sweet spot
-      const distance = Math.abs(tileCenter - sweetSpotY)
-      // Fade zone: from sweet spot to 40% of viewport height away
-      const fadeZone = viewportHeight * 0.4
+      let opacity: number
+      let zValue: number
 
-      if (distance <= 0) return 1
-      if (distance >= fadeZone) return 0.7
+      if (tileCenter >= sweetZoneTop && tileCenter <= sweetZoneBottom) {
+        // Inside sweet zone: 100% opacity, max z
+        opacity = 1
+        zValue = maxZ
+      } else if (tileCenter < sweetZoneTop) {
+        // Above sweet zone: fade from 100% at sweetZoneTop to 50% at top
+        const distanceFromZone = sweetZoneTop - tileCenter
+        const fadeDistance = sweetZoneTop // Distance from top to sweet zone
+        const t = Math.min(distanceFromZone / fadeDistance, 1)
+        opacity = 1 - (t * 0.5) // 1 to 0.5
+        zValue = maxZ * (1 - t) // maxZ to 0
+      } else {
+        // Below sweet zone: fade from 100% at sweetZoneBottom to 50% at bottom
+        const distanceFromZone = tileCenter - sweetZoneBottom
+        const fadeDistance = viewportHeight - sweetZoneBottom // Distance from sweet zone to bottom
+        const t = Math.min(distanceFromZone / fadeDistance, 1)
+        opacity = 1 - (t * 0.5) // 1 to 0.5
+        zValue = maxZ * (1 - t) // maxZ to 0
+      }
 
-      // Linear interpolation from 1 to 0.7 based on distance
-      const t = distance / fadeZone
-      return 1 - (t * 0.3) // 1 at center, 0.7 at edges
+      newOpacities.push(opacity)
+      newZValues.push(zValue)
     })
 
     setMobileOpacities(newOpacities)
+    setMobileZValues(newZValues)
   }, [isMobile])
 
   useEffect(() => {
@@ -664,8 +690,8 @@ export default function Showcase() {
           </motion.div>
         </div>
 
-        {/* 3D Tilt Container - desktop only */}
-        <div style={{ perspective: isMobile ? 'none' : '1500px' }}>
+        {/* 3D Container - tilt on desktop, z-movement on mobile */}
+        <div style={{ perspective: '1500px' }}>
           <motion.div
             style={{
               rotateX: isMobile ? 0 : rotateX,
@@ -695,8 +721,9 @@ export default function Showcase() {
                   ? mobileOpacities[index]
                   : (hoveredIndex === null ? 0.7 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
                 // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
+                // Mobile: scroll-based z movement
                 const maxZ = 42
-                const tileZ = isMobile ? 0 : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
+                const tileZ = isMobile ? mobileZValues[index] : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
 
                 return (
                   <motion.div
@@ -776,8 +803,9 @@ export default function Showcase() {
                   ? mobileOpacities[globalIndex]
                   : (hoveredIndex === null ? 0.7 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
                 // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
+                // Mobile: scroll-based z movement
                 const maxZ = 60
-                const tileZ = isMobile ? 0 : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
+                const tileZ = isMobile ? mobileZValues[globalIndex] : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
 
                 return (
                   <motion.div
