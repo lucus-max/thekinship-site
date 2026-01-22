@@ -590,7 +590,7 @@ export default function Showcase() {
 
     const newOpacities: number[] = []
     const newZValues: number[] = []
-    const maxZ = 20 // Max z-movement for mobile
+    const maxZ = 26 // Max z-movement for mobile
 
     tileRefs.current.forEach((tileRef) => {
       if (!tileRef) {
@@ -699,7 +699,7 @@ export default function Showcase() {
             >
               {projects.slice(0, 3).map((project, index) => {
                 const distance = tileDistances[index] || Infinity
-                const maxZ = 42
+                const maxZ = 55
                 // Smooth falloff based on distance - radius of ~300px for full effect
                 const falloffRadius = 300
                 const normalizedDist = Math.min(distance / falloffRadius, 1)
@@ -785,7 +785,7 @@ export default function Showcase() {
               {projects.slice(3).map((project, index) => {
                 const globalIndex = index + 3 // Offset by first 3
                 const distance = tileDistances[globalIndex] || Infinity
-                const maxZ = 60
+                const maxZ = 78
                 // Smooth falloff based on distance - radius of ~300px for full effect
                 const falloffRadius = 300
                 const normalizedDist = Math.min(distance / falloffRadius, 1)
