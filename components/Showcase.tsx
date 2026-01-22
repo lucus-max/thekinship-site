@@ -691,7 +691,10 @@ export default function Showcase() {
         </div>
 
         {/* 3D Container - tilt on desktop, z-movement on mobile */}
-        <div style={{ perspective: '1500px' }}>
+        <div
+          style={{ perspective: '1500px' }}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
           <motion.div
             style={{
               rotateX: isMobile ? 0 : rotateX,
@@ -709,7 +712,6 @@ export default function Showcase() {
               className="grid grid-cols-1 md:grid-cols-3"
               style={{ perspective: '1000px' }}
               onMouseMove={handleMouseMove}
-              onMouseLeave={() => setHoveredIndex(null)}
             >
               {projects.slice(0, 3).map((project, index) => {
                 const isHovered = hoveredIndex === index
@@ -790,7 +792,6 @@ export default function Showcase() {
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
               style={{ perspective: '1000px' }}
               onMouseMove={handleMouseMove}
-              onMouseLeave={() => setHoveredIndex(null)}
             >
               {projects.slice(3).map((project, index) => {
                 const globalIndex = index + 3 // Offset by first 3
