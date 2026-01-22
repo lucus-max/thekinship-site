@@ -719,7 +719,7 @@ export default function Showcase() {
                 // Mobile: Scroll-based opacity gradient
                 const tileOpacity = isMobile
                   ? mobileOpacities[index]
-                  : (hoveredIndex === null ? 0.7 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
+                  : (hoveredIndex === null ? 0.8 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
                 // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
                 // Mobile: scroll-based z movement
                 const maxZ = 42
@@ -801,7 +801,7 @@ export default function Showcase() {
                 // Mobile: Scroll-based opacity gradient
                 const tileOpacity = isMobile
                   ? mobileOpacities[globalIndex]
-                  : (hoveredIndex === null ? 0.7 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
+                  : (hoveredIndex === null ? 0.8 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
                 // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
                 // Mobile: scroll-based z movement
                 const maxZ = 60
