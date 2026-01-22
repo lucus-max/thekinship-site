@@ -10,7 +10,7 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="about" className="relative pt-12 md:py-32 lg:py-40 overflow-hidden">
+    <section id="about" className="relative pt-8 md:py-10 lg:py-12 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
           {/* Left column - Headline */}

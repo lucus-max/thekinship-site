@@ -510,6 +510,8 @@ export default function Showcase() {
   const [hoveredProject, setHoveredProject] = useState<typeof projects[0] | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [isOnGrid, setIsOnGrid] = useState(false)
+  const [tileDistances, setTileDistances] = useState<number[]>(new Array(projects.length).fill(Infinity))
   const [isMobile, setIsMobile] = useState(false)
   const [grid1Cols, setGrid1Cols] = useState(3)
   const [grid2Cols, setGrid2Cols] = useState(4)
@@ -522,45 +524,20 @@ export default function Showcase() {
   // Generate random rotations for each tile (consistent across renders)
   const tileRotations = useMemo(() => generateTileRotations(projects.length + 1), []) // +1 for "more to come"
 
-  // Calculate adjacent tiles for the hovered tile
-  const adjacentTiles = useMemo(() => {
-    if (hoveredIndex === null) return new Set<number>()
-
-    const adjacent = new Set<number>()
-
-    if (hoveredIndex < 3) {
-      // Hovered tile is in grid 1 (indices 0-2)
-      const grid1Adjacent = getAdjacentIndices(hoveredIndex, 3, grid1Cols)
-      grid1Adjacent.forEach(i => adjacent.add(i))
-
-      // Add tiles from top row of grid 2 that are visually below
-      // Grid 1 bottom row tiles are adjacent to grid 2 top row tiles
-      const hoveredCol = hoveredIndex % grid1Cols
-      // Map grid 1 column to grid 2 column (approximate)
-      const grid2TopRow = Math.floor(hoveredCol * grid2Cols / grid1Cols)
-      // Add the tile directly below and possibly neighbors
-      if (grid2TopRow >= 0 && grid2TopRow < grid2Cols) adjacent.add(3 + grid2TopRow)
-      if (grid2TopRow > 0) adjacent.add(3 + grid2TopRow - 1)
-      if (grid2TopRow < grid2Cols - 1) adjacent.add(3 + grid2TopRow + 1)
-    } else {
-      // Hovered tile is in grid 2 (indices 3+)
-      const grid2Index = hoveredIndex - 3
-      const grid2Adjacent = getAdjacentIndices(grid2Index, projects.length - 3, grid2Cols)
-      grid2Adjacent.forEach(i => adjacent.add(i + 3)) // Offset back to global index
-
-      // If in top row of grid 2, add adjacent tiles from grid 1
-      if (grid2Index < grid2Cols) {
-        const hoveredCol = grid2Index % grid2Cols
-        // Map grid 2 column to grid 1 column (approximate)
-        const grid1BottomRow = Math.floor(hoveredCol * grid1Cols / grid2Cols)
-        if (grid1BottomRow >= 0 && grid1BottomRow < 3) adjacent.add(grid1BottomRow)
-        if (grid1BottomRow > 0) adjacent.add(grid1BottomRow - 1)
-        if (grid1BottomRow < 2) adjacent.add(grid1BottomRow + 1)
-      }
-    }
-
-    return adjacent
-  }, [hoveredIndex, grid1Cols, grid2Cols])
+  // Calculate distance from cursor to each tile center for smooth falloff effect
+  const updateTileDistances = useCallback((clientX: number, clientY: number) => {
+    const distances = tileRefs.current.map((tileRef) => {
+      if (!tileRef) return Infinity
+      const rect = tileRef.getBoundingClientRect()
+      const tileCenterX = rect.left + rect.width / 2
+      const tileCenterY = rect.top + rect.height / 2
+      // Calculate distance from cursor to tile center
+      const dx = clientX - tileCenterX
+      const dy = clientY - tileCenterY
+      return Math.sqrt(dx * dx + dy * dy)
+    })
+    setTileDistances(distances)
+  }, [])
 
   // Mouse tracking for 3D tilt effect
   const mouseX = useMotionValue(0)
@@ -668,11 +645,14 @@ export default function Showcase() {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePos({ x: e.clientX, y: e.clientY })
+    if (!isMobile) {
+      updateTileDistances(e.clientX, e.clientY)
+    }
   }
 
   return (
     <>
-      <section id="work" className="relative z-10 pt-12 pb-12 md:py-32 lg:py-40 overflow-hidden">
+      <section id="work" className="relative z-10 pt-8 pb-8 md:py-10 lg:py-12 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             ref={ref}
@@ -693,7 +673,11 @@ export default function Showcase() {
         {/* 3D Container - tilt on desktop, z-movement on mobile */}
         <div
           style={{ perspective: '1500px' }}
-          onMouseLeave={() => setHoveredIndex(null)}
+          onMouseEnter={() => setIsOnGrid(true)}
+          onMouseLeave={() => {
+            setHoveredIndex(null)
+            setIsOnGrid(false)
+          }}
         >
           <motion.div
             style={{
@@ -714,18 +698,23 @@ export default function Showcase() {
               onMouseMove={handleMouseMove}
             >
               {projects.slice(0, 3).map((project, index) => {
-                const isHovered = hoveredIndex === index
-                const isAdjacent = adjacentTiles.has(index)
-                // Desktop: Three-tier brightness (hovered 100%, adjacent 70%, others 50%)
-                // When not hovering on grid: all tiles at 80%
-                // Mobile: Scroll-based brightness gradient
+                const distance = tileDistances[index] || Infinity
+                const maxZ = 42
+                // Smooth falloff based on distance - radius of ~300px for full effect
+                const falloffRadius = 300
+                const normalizedDist = Math.min(distance / falloffRadius, 1)
+                // Smooth easing function for falloff (ease-out curve)
+                const falloff = 1 - Math.pow(normalizedDist, 0.5)
+
+                // Desktop: Distance-based brightness and z
+                // When cursor off grid: 80% brightness, 0 z
+                // When on grid: smooth falloff from 100% at center to 80% at edge
                 const tileBrightness = isMobile
                   ? mobileOpacities[index]
-                  : (hoveredIndex === null ? 0.8 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
-                // Z correlates with brightness: hovered 100%, adjacent 70%, others 0%
-                // Mobile: scroll-based z movement
-                const maxZ = 42
-                const tileZ = isMobile ? mobileZValues[index] : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
+                  : (!isOnGrid ? 0.8 : 0.8 + (falloff * 0.2))
+                const tileZ = isMobile
+                  ? mobileZValues[index]
+                  : (!isOnGrid ? 0 : falloff * maxZ)
 
                 return (
                   <motion.div
@@ -738,10 +727,10 @@ export default function Showcase() {
                       rotateX: 0,
                       rotateY: 0,
                       z: tileZ,
-                      zIndex: isHovered ? 10 : (isAdjacent ? 5 : 1),
+                      zIndex: Math.round(falloff * 10),
                       filter: `brightness(${tileBrightness})`,
                     }}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
                     onMouseEnter={() => {
                       if (!isMobile) {
@@ -762,8 +751,8 @@ export default function Showcase() {
                     <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <motion.div
                       className="absolute inset-0 pointer-events-none z-20"
-                      animate={{ opacity: isHovered ? 1 : 0 }}
-                      transition={{ duration: 0.7, ease: "easeOut" }}
+                      animate={{ opacity: isOnGrid ? falloff : 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
                       style={{ border: '2px solid #D4AF37' }}
                     />
                     {isMobile && (
@@ -795,18 +784,23 @@ export default function Showcase() {
             >
               {projects.slice(3).map((project, index) => {
                 const globalIndex = index + 3 // Offset by first 3
-                const isHovered = hoveredIndex === globalIndex
-                const isAdjacent = adjacentTiles.has(globalIndex)
-                // Desktop: Three-tier brightness (hovered 100%, adjacent 70%, others 50%)
-                // When not hovering on grid: all tiles at 80%
-                // Mobile: Scroll-based brightness gradient
+                const distance = tileDistances[globalIndex] || Infinity
+                const maxZ = 60
+                // Smooth falloff based on distance - radius of ~300px for full effect
+                const falloffRadius = 300
+                const normalizedDist = Math.min(distance / falloffRadius, 1)
+                // Smooth easing function for falloff (ease-out curve)
+                const falloff = 1 - Math.pow(normalizedDist, 0.5)
+
+                // Desktop: Distance-based brightness and z
+                // When cursor off grid: 80% brightness, 0 z
+                // When on grid: smooth falloff from 100% at center to 80% at edge
                 const tileBrightness = isMobile
                   ? mobileOpacities[globalIndex]
-                  : (hoveredIndex === null ? 0.8 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
-                // Z correlates with brightness: hovered 100%, adjacent 70%, others 0%
-                // Mobile: scroll-based z movement
-                const maxZ = 60
-                const tileZ = isMobile ? mobileZValues[globalIndex] : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
+                  : (!isOnGrid ? 0.8 : 0.8 + (falloff * 0.2))
+                const tileZ = isMobile
+                  ? mobileZValues[globalIndex]
+                  : (!isOnGrid ? 0 : falloff * maxZ)
 
                 return (
                   <motion.div
@@ -819,10 +813,10 @@ export default function Showcase() {
                       rotateX: 0,
                       rotateY: 0,
                       z: tileZ,
-                      zIndex: isHovered ? 10 : (isAdjacent ? 5 : 1),
+                      zIndex: Math.round(falloff * 10),
                       filter: `brightness(${tileBrightness})`,
                     }}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
                     onMouseEnter={() => {
                       if (!isMobile) {
@@ -843,8 +837,8 @@ export default function Showcase() {
                     <div className="absolute inset-0 bg-gradient-to-t from-cinema-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <motion.div
                       className="absolute inset-0 pointer-events-none z-20"
-                      animate={{ opacity: isHovered ? 1 : 0 }}
-                      transition={{ duration: 0.7, ease: "easeOut" }}
+                      animate={{ opacity: isOnGrid ? falloff : 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
                       style={{ border: '2px solid #D4AF37' }}
                     />
                     {isMobile && (

@@ -68,7 +68,7 @@ export default function Services() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="services" className="relative pt-16 lg:pt-20 pb-12 md:pb-32 lg:pb-40 overflow-hidden">
+    <section id="services" className="relative pt-16 lg:pt-20 pb-8 md:pb-10 lg:pb-12 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <motion.div
           ref={ref}
