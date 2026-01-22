@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 
 const SEED = 42
 
+// Shared projected star positions for other components to access
+export const constellationStars: { x: number; y: number; depth: number }[] = []
+
 function seededRandom(s: number) {
   const x = Math.sin(s * 9999) * 10000
   return x - Math.floor(x)
@@ -144,6 +147,10 @@ export default function ParallaxOverlay() {
           size: star.size * (0.5 + depth * 0.8),
         }
       })
+
+      // Update shared star positions for wireframe connections
+      constellationStars.length = 0
+      projected.forEach(p => constellationStars.push({ x: p.x, y: p.y, depth: p.depth }))
 
       // Calculate vignette - stronger at edges
       const maxDist = Math.sqrt(centerX * centerX + centerY * centerY)

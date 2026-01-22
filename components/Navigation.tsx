@@ -53,9 +53,9 @@ export default function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
-          <Link href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center h-full">
             <motion.div
-              className="text-2xl lg:text-3xl tracking-wide uppercase font-bold text-white"
+              className="text-lg lg:text-xl tracking-wide uppercase font-bold text-white"
               whileHover={{ scale: 1.02 }}
               transition={spring}
             >
@@ -64,7 +64,7 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
+          <div className="hidden md:flex items-center h-full space-x-8 lg:space-x-12">
             {['Services', 'Work', 'About'].map((item) => (
               <Link
                 key={item}
