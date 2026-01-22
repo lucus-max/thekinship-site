@@ -643,6 +643,8 @@ export default function Showcase() {
               {projects.slice(0, 3).map((project, index) => {
                 const isHovered = hoveredIndex === index
                 const isAdjacent = adjacentTiles.has(index)
+                // Three-tier opacity: hovered 100%, adjacent 70%, others 50%
+                const tileOpacity = hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5))
 
                 return (
                   <motion.div
@@ -655,7 +657,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: isHovered ? 42 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: isAdjacent ? 0.3 : 1,
+                      opacity: tileOpacity,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
@@ -714,6 +716,8 @@ export default function Showcase() {
                 const globalIndex = index + 3 // Offset by first 3
                 const isHovered = hoveredIndex === globalIndex
                 const isAdjacent = adjacentTiles.has(globalIndex)
+                // Three-tier opacity: hovered 100%, adjacent 70%, others 50%
+                const tileOpacity = hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5))
 
                 return (
                   <motion.div
@@ -726,7 +730,7 @@ export default function Showcase() {
                       rotateY: 0,
                       z: isHovered ? 60 : 0,
                       zIndex: isHovered ? 10 : 1,
-                      opacity: isAdjacent ? 0.3 : 1,
+                      opacity: tileOpacity,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     onClick={() => setActiveVideo(project.video)}
