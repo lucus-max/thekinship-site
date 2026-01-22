@@ -120,8 +120,9 @@ export default function ParallaxOverlay() {
       const scale = Math.sqrt(width * width + height * height) * 0.575
 
       // Mobile: 50% smaller dots, 40% less opacity
+      // Overall 20% reduction applied to both
       const mobileSizeMultiplier = state.isMobile ? 0.5 : 1.0
-      const mobileOpacityMultiplier = state.isMobile ? 0.6 : 1.0
+      const mobileOpacityMultiplier = state.isMobile ? 0.48 : 0.8
 
       // Clear
       ctx.clearRect(0, 0, width, height)
