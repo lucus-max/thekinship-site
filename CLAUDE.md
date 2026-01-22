@@ -118,22 +118,27 @@ thekinship-site/
 
 ### Hero.tsx
 - **Parallax layers:** Background (floatingman_bg.png) and foreground (floatingman_fg_v2.png)
-- **Background:** Moves opposite to mouse (±15px), fills frame with object-cover
-- **Foreground:** Moves with mouse (±30px), 105% scale, centered with object-contain
+- **Loading gate:** Both images must load before hero fades in (prevents partial load flash)
+- **Desktop:** Mouse parallax (bg ±15px inverted, fg ±30px) + scroll parallax
+- **Mobile:** Scroll parallax only (mouse parallax disabled)
 - **Gradients:** Top fade (black→transparent) and bottom fade (transparent→black)
-- Disabled on mobile for performance
 
 ### Showcase.tsx
 - **Heading:** "WORK"
 - **Layout:** Tight grid with zero gaps
   - First 3 videos: 3 columns (featured row)
   - Remaining: 4 columns desktop, 3 tablet, 2 mobile
-- **3D Tilt Effect (desktop):** Entire grid subtly tilts away from mouse position (±2.75° Y, ±1.75° X)
-- **Hover animation:**
-  - Hovered tile pops forward (z: 42 featured, z: 60 others)
-  - 2px gold border (#D4AF37) fades in on hovered tile
-  - Only adjacent tiles (including diagonals) fade to 65% opacity
+- **3D Tilt Effect (desktop):** Entire grid subtly tilts toward mouse position (±2.75° Y, ±1.75° X)
+- **Desktop hover animation:**
+  - Default (cursor off grid): All tiles at 80% opacity
+  - Hovered tile: 100% opacity, full z-lift (42px featured / 60px others), gold border
+  - Adjacent tiles (incl. diagonals): 70% opacity, 70% z-lift
+  - Other tiles: 50% opacity, 0 z-lift
 - **Desktop interaction:** Cursor-following semi-transparent info box with title, subtitle, description
+- **Mobile scroll animation:**
+  - Sweet zone (25-50% from viewport top): 100% opacity + 20px z-lift
+  - Above/below sweet zone: Graduates to 50% opacity + 0 z at screen edges
+  - Tiles rise and brighten as they scroll into sweet zone
 - **Mobile:** Title overlays bottom of each thumbnail
 - **Video modal:** Custom player with mute/unmute, progress bar, fullscreen
   - Cross-browser compatible: uses `canplay` event (not `canplaythrough`) for Firefox support
@@ -153,11 +158,13 @@ thekinship-site/
 1. **Creative Direction** - Concept, Story, Brand, Execution
 2. **Generative AI** - Image Generation, Image to Video, Reference to Video, Upscaling
 3. **Finishing** - Edit, VFX, Grading, Finishing
+- **Mobile:** Center-justified text, bullet points bookend each highlight (• item •)
 
 ### About.tsx (Philosophy)
 - Ideas First
 - Ethical AI
 - Partnership, Not Transactions
+- **Mobile:** Center-justified text and headings
 
 ### Contact.tsx
 - "Let's Create" heading with email CTA
@@ -288,3 +295,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.4 | Adjacent-only hover dimming (with diagonals), gold border on hovered tiles, Safari video fixes, Hero foreground sizing |
 | v1.5 | About section copy updates |
 | v1.6 | Firefox video fix - use `canplay` event, play button overlay for autoplay blocks, uploaded missing R2 videos |
+| v1.7 | Hero image loading gate, mobile scroll parallax, mobile UX (centered Services/About, reduced section gaps), desktop grid z-depth correlates with opacity (80% default), mobile grid sweet zone with scroll-based opacity/z animation |
