@@ -689,10 +689,14 @@ export default function Showcase() {
                 const isHovered = hoveredIndex === index
                 const isAdjacent = adjacentTiles.has(index)
                 // Desktop: Three-tier opacity (hovered 100%, adjacent 70%, others 50%)
+                // When not hovering on grid: all tiles at 70%
                 // Mobile: Scroll-based opacity gradient
                 const tileOpacity = isMobile
                   ? mobileOpacities[index]
-                  : (hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
+                  : (hoveredIndex === null ? 0.7 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
+                // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
+                const maxZ = 42
+                const tileZ = isMobile ? 0 : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
 
                 return (
                   <motion.div
@@ -704,8 +708,8 @@ export default function Showcase() {
                     animate={{
                       rotateX: 0,
                       rotateY: 0,
-                      z: isHovered ? 42 : 0,
-                      zIndex: isHovered ? 10 : 1,
+                      z: tileZ,
+                      zIndex: isHovered ? 10 : (isAdjacent ? 5 : 1),
                       opacity: tileOpacity,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
@@ -766,10 +770,14 @@ export default function Showcase() {
                 const isHovered = hoveredIndex === globalIndex
                 const isAdjacent = adjacentTiles.has(globalIndex)
                 // Desktop: Three-tier opacity (hovered 100%, adjacent 70%, others 50%)
+                // When not hovering on grid: all tiles at 70%
                 // Mobile: Scroll-based opacity gradient
                 const tileOpacity = isMobile
                   ? mobileOpacities[globalIndex]
-                  : (hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
+                  : (hoveredIndex === null ? 0.7 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
+                // Z correlates with opacity: hovered 100%, adjacent 70%, others 0%
+                const maxZ = 60
+                const tileZ = isMobile ? 0 : (isHovered ? maxZ : (isAdjacent ? maxZ * 0.7 : 0))
 
                 return (
                   <motion.div
@@ -781,8 +789,8 @@ export default function Showcase() {
                     animate={{
                       rotateX: 0,
                       rotateY: 0,
-                      z: isHovered ? 60 : 0,
-                      zIndex: isHovered ? 10 : 1,
+                      z: tileZ,
+                      zIndex: isHovered ? 10 : (isAdjacent ? 5 : 1),
                       opacity: tileOpacity,
                     }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
