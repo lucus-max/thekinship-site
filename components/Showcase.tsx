@@ -704,7 +704,7 @@ export default function Showcase() {
                 const falloffRadius = 300
                 const normalizedDist = Math.min(distance / falloffRadius, 1)
                 // Smooth easing function for falloff (ease-out curve)
-                const falloff = 1 - Math.pow(normalizedDist, 0.5)
+                const falloff = 1 - Math.pow(normalizedDist, 1.5)
 
                 // Desktop: Distance-based brightness and z
                 // When cursor off grid: 80% brightness, 0 z
@@ -790,7 +790,7 @@ export default function Showcase() {
                 const falloffRadius = 300
                 const normalizedDist = Math.min(distance / falloffRadius, 1)
                 // Smooth easing function for falloff (ease-out curve)
-                const falloff = 1 - Math.pow(normalizedDist, 0.5)
+                const falloff = 1 - Math.pow(normalizedDist, 1.5)
 
                 // Desktop: Distance-based brightness and z
                 // When cursor off grid: 80% brightness, 0 z
