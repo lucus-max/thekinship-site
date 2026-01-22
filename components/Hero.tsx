@@ -1,12 +1,20 @@
 'use client'
 
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { spring, fadeUpBlur, clipReveal } from '@/lib/motion'
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Scroll tracking for parallax
+  const { scrollY } = useScroll()
+
+  // Scroll-based parallax - fg moves faster than bg for depth effect
+  const scrollBgY = useTransform(scrollY, [0, 1000], [0, 150])
+  const scrollFgY = useTransform(scrollY, [0, 1000], [0, 300])
 
   // Mouse tracking for parallax
   const mouseX = useMotionValue(0)
@@ -16,11 +24,15 @@ export default function Hero() {
 
   // Background layer - inverted movement (moves opposite to mouse)
   const bgX = useTransform(smoothMouseX, [-1, 1], [-15, 15])
-  const bgY = useTransform(smoothMouseY, [-1, 1], [-10, 10])
+  const bgMouseY = useTransform(smoothMouseY, [-1, 1], [-10, 10])
+  // Combined bg Y: mouse + scroll
+  const bgY = useTransform([bgMouseY, scrollBgY], ([mouse, scroll]) => (mouse as number) + (scroll as number))
 
   // Foreground (man) layer - more movement (30% increased from base 30/20)
   const fgX = useTransform(smoothMouseX, [-1, 1], [39, -39])
-  const fgY = useTransform(smoothMouseY, [-1, 1], [26, -26])
+  const fgMouseY = useTransform(smoothMouseY, [-1, 1], [26, -26])
+  // Combined fg Y: mouse + scroll
+  const fgY = useTransform([fgMouseY, scrollFgY], ([mouse, scroll]) => (mouse as number) + (scroll as number))
 
   useEffect(() => {
     const checkMobile = () => {
@@ -45,7 +57,7 @@ export default function Hero() {
   }, [isMobile, mouseX, mouseY])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background layer - parallax, inverted direction, fills frame */}
       <motion.div
         className="absolute inset-0 z-0"
@@ -64,7 +76,7 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Foreground (man) layer - parallax, 85% scale */}
+      {/* Foreground (man) layer - parallax with mouse + scroll */}
       <motion.div
         className="absolute inset-0 z-0 flex items-center justify-center"
         style={{
