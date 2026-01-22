@@ -25,8 +25,8 @@ export default function About() {
               <div className="w-12 h-px bg-cinema-gold" />
             </div>
 
-            {/* Header: tracking-wide, uppercase, bold - 30% larger */}
-            <h2 className="text-5xl md:text-6xl lg:text-7xl tracking-wide uppercase font-bold text-white leading-tight mb-8">
+            {/* Header: tracking-wide, uppercase, bold */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white leading-tight mb-8">
               Human-led, <span className="text-cinema-gold">high-end content.</span>
             </h2>
 
