@@ -778,7 +778,7 @@ export default function Showcase() {
               variants={staggerContainer}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-[25px]"
               style={{ perspective: '1000px' }}
               onMouseMove={handleMouseMove}
             >
