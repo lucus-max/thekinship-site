@@ -7,6 +7,9 @@ import { spring, fadeUpBlur, clipReveal } from '@/lib/motion'
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false)
+  const [bgLoaded, setBgLoaded] = useState(false)
+  const [fgLoaded, setFgLoaded] = useState(false)
+  const imagesReady = bgLoaded && fgLoaded
   const sectionRef = useRef<HTMLElement>(null)
 
   // Scroll tracking for parallax
@@ -58,43 +61,53 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background layer - parallax, inverted direction, fills frame */}
+      {/* Parallax layers container - fades in when both images loaded */}
       <motion.div
         className="absolute inset-0 z-0"
-        style={{
-          x: isMobile ? 0 : bgX,
-          y: isMobile ? scrollBgY : bgY,
-          transformOrigin: 'center center',
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: imagesReady ? 1 : 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <Image
-          src="/media/floatingman_bg.png"
-          alt=""
-          fill
-          priority
-          className="object-cover opacity-70"
-        />
-      </motion.div>
-
-      {/* Foreground (man) layer - parallax with mouse + scroll */}
-      <motion.div
-        className="absolute inset-0 z-0 flex items-center justify-center"
-        style={{
-          x: isMobile ? 0 : fgX,
-          y: isMobile ? scrollFgY : fgY,
-          transformOrigin: 'center center',
-        }}
-      >
-        <div className="relative w-[105%] h-[105%]">
+        {/* Background layer - parallax, inverted direction, fills frame */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            x: isMobile ? 0 : bgX,
+            y: isMobile ? scrollBgY : bgY,
+            transformOrigin: 'center center',
+          }}
+        >
           <Image
-            src="/media/floatingman_fg_v2.png"
+            src="/media/floatingman_bg.png"
             alt=""
             fill
             priority
-            className="object-contain opacity-70"
-            style={{ objectPosition: 'center center' }}
+            className="object-cover opacity-70"
+            onLoad={() => setBgLoaded(true)}
           />
-        </div>
+        </motion.div>
+
+        {/* Foreground (man) layer - parallax with mouse + scroll */}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{
+            x: isMobile ? 0 : fgX,
+            y: isMobile ? scrollFgY : fgY,
+            transformOrigin: 'center center',
+          }}
+        >
+          <div className="relative w-[105%] h-[105%]">
+            <Image
+              src="/media/floatingman_fg_v2.png"
+              alt=""
+              fill
+              priority
+              className="object-contain opacity-70"
+              style={{ objectPosition: 'center center' }}
+              onLoad={() => setFgLoaded(true)}
+            />
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* Gradient overlays - static, above parallax layers */}
