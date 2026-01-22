@@ -10,7 +10,7 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="about" className="relative py-32 lg:py-40 overflow-hidden">
+    <section id="about" className="relative pt-12 md:py-32 lg:py-40 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
           {/* Left column - Headline */}
@@ -19,9 +19,9 @@ export default function About() {
             variants={scrollReveal}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="lg:col-span-5"
+            className="lg:col-span-5 text-center md:text-left"
           >
-            <div className="flex items-center gap-6 mb-8">
+            <div className="flex items-center justify-center md:justify-start gap-6 mb-8">
               <div className="w-12 h-px bg-cinema-gold" />
             </div>
 
@@ -77,7 +77,7 @@ export default function About() {
                 animate={isInView ? 'visible' : 'hidden'}
                 whileHover={{ x: 8 }}
                 transition={{ ...spring, delay: 0.2 + index * 0.1 }}
-                className="border border-white/10 bg-cinema-card/50 p-8 hover:bg-cinema-card transition-colors duration-300"
+                className="border border-white/10 bg-cinema-card/50 p-8 hover:bg-cinema-card transition-colors duration-300 text-center md:text-left"
               >
                 {/* Title: tracking-wide, uppercase, bold */}
                 <h3 className="text-xl lg:text-2xl tracking-wide uppercase font-bold text-cinema-gold mb-4">

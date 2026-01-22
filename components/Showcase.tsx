@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence, useScroll } from 'framer-motion'
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react'
 import { scrollReveal, spring, staggerContainer, staggerItem } from '@/lib/motion'
 
 // Seeded random for consistent tile rotations
@@ -504,6 +504,7 @@ function VideoModal({ video, isOpen, onClose }: { video: string; isOpen: boolean
 export default function Showcase() {
   const ref = useRef(null)
   const gridRef = useRef<HTMLDivElement>(null)
+  const tileRefs = useRef<(HTMLDivElement | null)[]>([])
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeVideo, setActiveVideo] = useState<string | null>(null)
   const [hoveredProject, setHoveredProject] = useState<typeof projects[0] | null>(null)
@@ -512,6 +513,10 @@ export default function Showcase() {
   const [isMobile, setIsMobile] = useState(false)
   const [grid1Cols, setGrid1Cols] = useState(3)
   const [grid2Cols, setGrid2Cols] = useState(4)
+  const [mobileOpacities, setMobileOpacities] = useState<number[]>(new Array(projects.length).fill(1))
+
+  // Scroll tracking for mobile opacity gradient
+  const { scrollY } = useScroll()
 
   // Generate random rotations for each tile (consistent across renders)
   const tileRotations = useMemo(() => generateTileRotations(projects.length + 1), []) // +1 for "more to come"
@@ -595,13 +600,53 @@ export default function Showcase() {
     }
   }, [isMobile, mouseX, mouseY])
 
+  // Mobile scroll-based opacity gradient effect
+  const updateMobileOpacities = useCallback(() => {
+    if (!isMobile) return
+
+    const viewportHeight = window.innerHeight
+    // Sweet spot is just above center (45% from top)
+    const sweetSpotY = viewportHeight * 0.45
+
+    const newOpacities = tileRefs.current.map((tileRef) => {
+      if (!tileRef) return 1
+
+      const rect = tileRef.getBoundingClientRect()
+      const tileCenter = rect.top + rect.height / 2
+
+      // Calculate distance from sweet spot
+      const distance = Math.abs(tileCenter - sweetSpotY)
+      // Fade zone: from sweet spot to 40% of viewport height away
+      const fadeZone = viewportHeight * 0.4
+
+      if (distance <= 0) return 1
+      if (distance >= fadeZone) return 0.7
+
+      // Linear interpolation from 1 to 0.7 based on distance
+      const t = distance / fadeZone
+      return 1 - (t * 0.3) // 1 at center, 0.7 at edges
+    })
+
+    setMobileOpacities(newOpacities)
+  }, [isMobile])
+
+  useEffect(() => {
+    if (!isMobile) return
+
+    const unsubscribe = scrollY.on('change', updateMobileOpacities)
+    // Initial calculation
+    updateMobileOpacities()
+
+    return () => unsubscribe()
+  }, [isMobile, scrollY, updateMobileOpacities])
+
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePos({ x: e.clientX, y: e.clientY })
   }
 
   return (
     <>
-      <section id="work" className="relative z-10 py-32 lg:py-40 overflow-hidden">
+      <section id="work" className="relative z-10 pt-12 pb-12 md:py-32 lg:py-40 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             ref={ref}
@@ -643,12 +688,16 @@ export default function Showcase() {
               {projects.slice(0, 3).map((project, index) => {
                 const isHovered = hoveredIndex === index
                 const isAdjacent = adjacentTiles.has(index)
-                // Three-tier opacity: hovered 100%, adjacent 70%, others 50%
-                const tileOpacity = hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5))
+                // Desktop: Three-tier opacity (hovered 100%, adjacent 70%, others 50%)
+                // Mobile: Scroll-based opacity gradient
+                const tileOpacity = isMobile
+                  ? mobileOpacities[index]
+                  : (hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
 
                 return (
                   <motion.div
                     key={project.title}
+                    ref={(el) => { tileRefs.current[index] = el }}
                     variants={staggerItem}
                     className="relative aspect-video cursor-pointer overflow-hidden group"
                     style={{ transformStyle: 'preserve-3d' }}
@@ -716,12 +765,16 @@ export default function Showcase() {
                 const globalIndex = index + 3 // Offset by first 3
                 const isHovered = hoveredIndex === globalIndex
                 const isAdjacent = adjacentTiles.has(globalIndex)
-                // Three-tier opacity: hovered 100%, adjacent 70%, others 50%
-                const tileOpacity = hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5))
+                // Desktop: Three-tier opacity (hovered 100%, adjacent 70%, others 50%)
+                // Mobile: Scroll-based opacity gradient
+                const tileOpacity = isMobile
+                  ? mobileOpacities[globalIndex]
+                  : (hoveredIndex === null ? 1 : (isHovered ? 1 : (isAdjacent ? 0.7 : 0.5)))
 
                 return (
                   <motion.div
                     key={project.title}
+                    ref={(el) => { tileRefs.current[globalIndex] = el }}
                     variants={staggerItem}
                     className="relative aspect-video cursor-pointer overflow-hidden group"
                     style={{ transformStyle: 'preserve-3d' }}

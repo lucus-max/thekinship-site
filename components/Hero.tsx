@@ -63,7 +63,7 @@ export default function Hero() {
         className="absolute inset-0 z-0"
         style={{
           x: isMobile ? 0 : bgX,
-          y: isMobile ? 0 : bgY,
+          y: isMobile ? scrollBgY : bgY,
           transformOrigin: 'center center',
         }}
       >
@@ -81,7 +81,7 @@ export default function Hero() {
         className="absolute inset-0 z-0 flex items-center justify-center"
         style={{
           x: isMobile ? 0 : fgX,
-          y: isMobile ? 0 : fgY,
+          y: isMobile ? scrollFgY : fgY,
           transformOrigin: 'center center',
         }}
       >

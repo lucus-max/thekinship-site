@@ -37,7 +37,7 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
       className="group relative border border-white/10 bg-cinema-card/50 p-8 lg:p-10 hover:bg-cinema-card transition-colors duration-500"
     >
       <div className="relative h-full flex flex-col">
-        <div className="space-y-4">
+        <div className="space-y-4 text-center md:text-left">
           {/* Title: tracking-wide, uppercase, bold */}
           <h3 className="text-2xl lg:text-3xl tracking-wide uppercase font-bold text-white group-hover:text-cinema-gold transition-colors duration-300">
             {service.title}
@@ -49,11 +49,12 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
           </p>
         </div>
 
-        <div className="pt-4 space-y-3 mt-auto">
+        <div className="pt-4 space-y-3 mt-auto flex flex-col items-center md:items-start">
           {service.highlights.map((highlight, i) => (
             <div key={i} className="flex items-center gap-3">
               <div className="w-1.5 h-1.5 bg-cinema-gold" />
               <span className="text-sm text-white/60 tracking-wide">{highlight}</span>
+              <div className="w-1.5 h-1.5 bg-cinema-gold" />
             </div>
           ))}
         </div>
@@ -67,7 +68,7 @@ export default function Services() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="services" className="relative pt-16 lg:pt-20 pb-32 lg:pb-40 overflow-hidden">
+    <section id="services" className="relative pt-16 lg:pt-20 pb-12 md:pb-32 lg:pb-40 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <motion.div
           ref={ref}
