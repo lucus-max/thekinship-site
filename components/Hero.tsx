@@ -396,7 +396,7 @@ export default function Hero() {
             transformOrigin: 'center center',
           }}
         >
-          <div className="relative w-[105%] h-[105%]">
+          <div className="relative w-[157%] h-[157%] md:w-[105%] md:h-[105%]">
             <Image
               src="/media/floatingman_fg_v2.png"
               alt=""
