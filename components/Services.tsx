@@ -7,22 +7,22 @@ import { scrollReveal, spring, staggerContainer, staggerItem } from '@/lib/motio
 const services = [
   {
     title: 'CREATIVE DIRECTION',
-    description: 'Strategic creative direction for brands and agencies. Bridging the gap between human artistry and technological innovation.',
+    subtitle: 'For post houses, agencies or brands.',
     highlights: ['Concept', 'Story', 'Brand', 'Execution'],
   },
   {
     title: 'GENERATIVE AI',
-    description: 'Cutting-edge AI content creation. I can work locally and securely with open-source models, or adapt to your individual AI tools and workflows.',
+    subtitle: 'Local and secure, or tailored to your existing workflows.',
     highlights: ['Image Generation', 'Image to Video', 'Reference to Video', 'Upscaling'],
   },
   {
     title: 'FINISHING',
-    description: 'An end to end wheelhouse, with compositing at its heart.',
+    subtitle: 'An end to end wheelhouse, with compositing at its heart.',
     highlights: ['Edit', 'VFX', 'Grading', 'Finishing'],
   },
 ]
 
-function ServiceCard({ service, index }: { service: typeof services[0], index: number }) {
+function ServiceCard({ service, index }: { service: typeof services[0] & { subtitle?: string }, index: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -37,19 +37,19 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
       className="group relative border border-white/10 bg-cinema-card/50 p-8 lg:p-10 hover:bg-cinema-card transition-colors duration-500"
     >
       <div className="relative h-full flex flex-col">
-        <div className="space-y-4 text-center">
+        <div className="text-center">
           {/* Title: tracking-wide, uppercase, bold */}
           <h3 className="text-2xl lg:text-3xl tracking-wide uppercase font-bold text-white group-hover:text-cinema-gold transition-colors duration-300">
             {service.title}
           </h3>
-
-          {/* Body: generous leading */}
-          <p className="text-base lg:text-lg text-cinema-silver/80 leading-relaxed min-h-[4.5rem]">
-            {service.description}
-          </p>
+          {service.subtitle && (
+            <p className="text-base text-cinema-silver/70 mt-3">
+              {service.subtitle}
+            </p>
+          )}
         </div>
 
-        <div className="pt-4 space-y-3 mt-auto flex flex-col items-center">
+        <div className="pt-6 space-y-3 mt-auto flex flex-col items-center">
           {service.highlights.map((highlight, i) => (
             <div key={i} className="flex items-center gap-3">
               <div className="w-1.5 h-1.5 bg-cinema-gold" />

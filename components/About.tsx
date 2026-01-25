@@ -33,7 +33,7 @@ export default function About() {
             {/* Body: generous leading */}
             <div className="space-y-6 text-cinema-silver/80">
               <p className="text-lg leading-relaxed">
-                I've spent two decades directing and supervising for major brands. Now, I'm using generative tools to take it further. 25 years of knowledge. Now powered by AI.
+                I've spent two decades directing and supervising for major brands. Now, I'm using generative tools to take it further.
               </p>
             </div>
 
