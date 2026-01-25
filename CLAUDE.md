@@ -120,8 +120,8 @@ thekinship-site/
 ### Hero.tsx
 - **Parallax layers:** Background (floatingman_bg.png) and foreground (floatingman_fg_v2.png)
 - **Loading gate:** Both images must load before hero fades in (prevents partial load flash)
-- **Desktop:** Mouse parallax (bg ±15px inverted, fg ±30px) + scroll parallax
-- **Mobile:** Scroll parallax only (mouse parallax disabled)
+- **Desktop:** Mouse parallax (bg ±15px inverted, fg ±30px) + scroll parallax, foreground 105% size
+- **Mobile:** Scroll parallax only (mouse parallax disabled), foreground 157% size (50% larger)
 - **Gradients:** Top fade (black→transparent) and bottom fade (transparent→black)
 - **Logo Wireframe (desktop):**
   - Angular lines trace letter shapes with dots at vertices
@@ -307,4 +307,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.5 | About section copy updates |
 | v1.6 | Firefox video fix - use `canplay` event, play button overlay for autoplay blocks, uploaded missing R2 videos |
 | v1.7 | Logo wireframe constellation - cursor-reveal wireframe traces logo letters, connects to animated constellation stars. Navigation title 30% smaller. Services center-justified on desktop with bookend bullets. Reduced section gaps. Video grid: distance-based brightness/z falloff (smooth circle effect), 30% increased z-movement, gold border follows animation. Constellation opacity reduced 20%. |
-| v1.8 | Services redesign - replaced long descriptions with short subtitles, left-aligned all content (headings, subtitles, bullets), reduced heading size for single-line titles. About section copy trimmed. |
+| v1.8 | Services redesign - replaced long descriptions with short subtitles, left-aligned all content (headings, subtitles, bullets), reduced heading size for single-line titles. About section copy trimmed. Hero foreground layer 50% larger on mobile. |
