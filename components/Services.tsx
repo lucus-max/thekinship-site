@@ -39,7 +39,7 @@ function ServiceCard({ service, index }: { service: typeof services[0] & { subti
       <div className="relative h-full flex flex-col">
         <div>
           {/* Title: tracking-wide, uppercase, bold */}
-          <h3 className="text-2xl lg:text-3xl tracking-wide uppercase font-bold text-white group-hover:text-cinema-gold transition-colors duration-300">
+          <h3 className="text-xl lg:text-2xl tracking-wide uppercase font-bold text-white group-hover:text-cinema-gold transition-colors duration-300 whitespace-nowrap">
             {service.title}
           </h3>
           {service.subtitle && (
