@@ -165,10 +165,11 @@ thekinship-site/
 - **Exports `constellationStars`:** Shared array of projected star positions for wireframe connections
 
 ### Services.tsx (What I Do)
-1. **Creative Direction** - Concept, Story, Brand, Execution
-2. **Generative AI** - Image Generation, Image to Video, Reference to Video, Upscaling
-3. **Finishing** - Edit, VFX, Grading, Finishing
-- **All screens:** Center-justified text, bullet points bookend each highlight (• item •)
+1. **Creative Direction** - "For post houses, agencies or brands." - Concept, Story, Brand, Execution
+2. **Generative AI** - "Local and secure, or tailored to your existing workflows." - Image Generation, Image to Video, Reference to Video, Upscaling
+3. **Finishing** - "An end to end wheelhouse, with compositing at its heart." - Edit, VFX, Grading, Finishing
+- **Layout:** Left-aligned headings, subtitles, and bullet points
+- **Headings:** Reduced size (text-xl lg:text-2xl) to fit on single line
 
 ### About.tsx (Philosophy)
 - Ideas First
@@ -306,3 +307,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.5 | About section copy updates |
 | v1.6 | Firefox video fix - use `canplay` event, play button overlay for autoplay blocks, uploaded missing R2 videos |
 | v1.7 | Logo wireframe constellation - cursor-reveal wireframe traces logo letters, connects to animated constellation stars. Navigation title 30% smaller. Services center-justified on desktop with bookend bullets. Reduced section gaps. Video grid: distance-based brightness/z falloff (smooth circle effect), 30% increased z-movement, gold border follows animation. Constellation opacity reduced 20%. |
+| v1.8 | Services redesign - replaced long descriptions with short subtitles, left-aligned all content (headings, subtitles, bullets), reduced heading size for single-line titles. About section copy trimmed. |
