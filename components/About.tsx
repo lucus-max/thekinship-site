@@ -2,7 +2,6 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import Image from 'next/image'
 import { scrollReveal, spring, staggerItem } from '@/lib/motion'
 
 export default function About() {
@@ -27,7 +26,10 @@ export default function About() {
 
             {/* Header: tracking-wide, uppercase, bold */}
             <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-wide uppercase font-bold text-white leading-tight mb-8">
-              Human-led, <span className="text-cinema-gold">high-end content.</span>
+              <span className="whitespace-nowrap">Human-led,</span>{' '}
+              <span className="text-cinema-gold whitespace-nowrap">high-end</span>
+              <br />
+              <span className="text-cinema-gold">content.</span>
             </h2>
 
             {/* Body: generous leading */}
@@ -92,23 +94,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* Tech stack logos */}
-        <motion.div
-          variants={scrollReveal}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="mt-24 pt-16 border-t border-white/10"
-        >
-          <p className="text-sm tracking-widest uppercase text-white/40 text-center mb-12">
-            Powered By
-          </p>
-          <div className="flex justify-center items-center gap-12 md:gap-20 py-8 px-6">
-            <Image src="/logos/comfyui.webp" alt="Comfy UI" width={120} height={120} className="w-20 h-20 object-contain" />
-            <Image src="/logos/weavy.jpg" alt="Weavy" width={120} height={120} className="w-20 h-20 object-contain" />
-            <Image src="/logos/nuke.jpg" alt="Nuke" width={120} height={120} className="w-20 h-20 object-contain" />
-            <Image src="/logos/davinci.jpg" alt="DaVinci Resolve" width={120} height={120} className="w-20 h-20 object-contain" />
-          </div>
-        </motion.div>
       </div>
     </section>
   )

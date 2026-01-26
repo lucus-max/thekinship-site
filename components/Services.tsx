@@ -8,17 +8,14 @@ const services = [
   {
     title: 'CREATIVE DIRECTION',
     subtitle: 'For post houses, agencies or brands.',
-    highlights: ['Concept', 'Story', 'Brand', 'Execution'],
   },
   {
     title: 'GENERATIVE AI',
     subtitle: 'Local and secure, or tailored to your existing workflows.',
-    highlights: ['Image Generation', 'Image to Video', 'Reference to Video', 'Upscaling'],
   },
   {
     title: 'FINISHING',
     subtitle: 'An end to end wheelhouse, with compositing at its heart.',
-    highlights: ['Edit', 'VFX', 'Grading', 'Finishing'],
   },
 ]
 
@@ -49,14 +46,6 @@ function ServiceCard({ service, index }: { service: typeof services[0] & { subti
           )}
         </div>
 
-        <div className="pt-6 space-y-3 mt-auto flex flex-col items-start">
-          {service.highlights.map((highlight, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-cinema-gold" />
-              <span className="text-sm text-white/60 tracking-wide">{highlight}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </motion.div>
   )

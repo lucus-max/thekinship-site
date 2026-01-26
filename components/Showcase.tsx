@@ -3,6 +3,7 @@
 import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence, useScroll } from 'framer-motion'
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react'
 import { scrollReveal, spring, staggerContainer, staggerItem } from '@/lib/motion'
+import Image from 'next/image'
 
 // Seeded random for consistent tile rotations
 function seededRandom(seed: number) {
@@ -887,6 +888,24 @@ export default function Showcase() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Tech stack logos */}
+        <motion.div
+          variants={scrollReveal}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="max-w-7xl mx-auto px-6 lg:px-12 mt-24 pt-16 border-t border-white/10"
+        >
+          <p className="text-sm tracking-widest uppercase text-white/40 text-center mb-12">
+            Powered By
+          </p>
+          <div className="flex justify-center items-center gap-12 md:gap-20 py-8 px-6">
+            <Image src="/logos/comfyui.webp" alt="Comfy UI" width={120} height={120} className="w-20 h-20 object-contain" />
+            <Image src="/logos/weavy.jpg" alt="Weavy" width={120} height={120} className="w-20 h-20 object-contain" />
+            <Image src="/logos/nuke.jpg" alt="Nuke" width={120} height={120} className="w-20 h-20 object-contain" />
+            <Image src="/logos/davinci.jpg" alt="DaVinci Resolve" width={120} height={120} className="w-20 h-20 object-contain" />
+          </div>
+        </motion.div>
       </section>
 
       <VideoModal
