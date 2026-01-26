@@ -41,9 +41,9 @@ thekinship-site/
 ├── components/
 │   ├── Navigation.tsx    # Header nav - desktop links + mobile hamburger menu
 │   ├── Hero.tsx          # Landing - parallax layers, logo, CTAs
-│   ├── Showcase.tsx      # Video portfolio - tight grid + cursor-following info
-│   ├── Services.tsx      # "What I Do" - 3 cards + tool logos
-│   ├── About.tsx         # Philosophy - 3 value cards
+│   ├── Showcase.tsx      # Video portfolio - tight grid + cursor-following info + Powered By logos
+│   ├── Services.tsx      # "What I Do" - 3 cards (title + subtitle only)
+│   ├── About.tsx         # Philosophy - headline + stats + 3 value cards
 │   ├── Contact.tsx       # "Let's Create" CTA
 │   ├── Footer.tsx        # Site footer
 │   └── ui/
@@ -154,6 +154,7 @@ thekinship-site/
   - Handles autoplay blocks gracefully with play button overlay
   - Separate states for load errors vs autoplay policy blocks
   - Error state with retry button
+- **Powered By section:** Tech stack logos (ComfyUI, Weavy, Nuke, DaVinci) at bottom
 
 ### ParallaxOverlay.tsx
 - 3D constellation sphere rendered on Canvas
@@ -165,17 +166,18 @@ thekinship-site/
 - **Exports `constellationStars`:** Shared array of projected star positions for wireframe connections
 
 ### Services.tsx (What I Do)
-1. **Creative Direction** - "For post houses, agencies or brands." - Concept, Story, Brand, Execution
-2. **Generative AI** - "Local and secure, or tailored to your existing workflows." - Image Generation, Image to Video, Reference to Video, Upscaling
-3. **Finishing** - "An end to end wheelhouse, with compositing at its heart." - Edit, VFX, Grading, Finishing
-- **Layout:** Left-aligned headings, subtitles, and bullet points
+1. **Creative Direction** - "For post houses, agencies or brands."
+2. **Generative AI** - "Local and secure, or tailored to your existing workflows."
+3. **Finishing** - "An end to end wheelhouse, with compositing at its heart."
+- **Layout:** Title + subtitle only (no bullet points)
 - **Headings:** Reduced size (text-xl lg:text-2xl) to fit on single line
 
 ### About.tsx (Philosophy)
-- Ideas First
-- Ethical AI
-- Partnership, Not Transactions
+- **Heading:** "Human-led, high-end content." with line breaks for typography
+- **Stats:** 25+ Years, 100% Ethical AI, ∞ Possibilities
+- **Value cards:** Ideas First, Ethical AI, Team Not Transactions
 - **Mobile:** Center-justified text and headings
+- **Section order:** Now appears directly after Hero (before Services)
 
 ### Contact.tsx
 - "Let's Create" heading with email CTA
@@ -308,3 +310,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.6 | Firefox video fix - use `canplay` event, play button overlay for autoplay blocks, uploaded missing R2 videos |
 | v1.7 | Logo wireframe constellation - cursor-reveal wireframe traces logo letters, connects to animated constellation stars. Navigation title 30% smaller. Services center-justified on desktop with bookend bullets. Reduced section gaps. Video grid: distance-based brightness/z falloff (smooth circle effect), 30% increased z-movement, gold border follows animation. Constellation opacity reduced 20%. |
 | v1.8 | Services redesign - replaced long descriptions with short subtitles, left-aligned all content (headings, subtitles, bullets), reduced heading size for single-line titles. About section copy trimmed. Hero foreground layer 50% larger on mobile. |
+| v1.9 | Section reorder - About moved to below Hero. Services simplified to title + subtitle only (removed bullet points). Powered By logos moved to after Work section. About heading typography improved with line breaks. |
