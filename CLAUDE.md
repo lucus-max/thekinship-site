@@ -235,6 +235,8 @@ thekinship-site/
 ### Direct Video Links
 Use `?video=<slug>` to link directly to a video. Page scrolls to Work section and auto-opens modal.
 
+**Sharing:** Click any video on the site and the browser URL updates automatically. Copy the URL from your address bar to share.
+
 **Example:** `https://thekinship.ai/?video=sky-f1`
 
 | Title | Slug | File |
@@ -317,4 +319,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.7 | Logo wireframe constellation - cursor-reveal wireframe traces logo letters, connects to animated constellation stars. Navigation title 30% smaller. Services center-justified on desktop with bookend bullets. Reduced section gaps. Video grid: distance-based brightness/z falloff (smooth circle effect), 30% increased z-movement, gold border follows animation. Constellation opacity reduced 20%. |
 | v1.8 | Services redesign - replaced long descriptions with short subtitles, left-aligned all content (headings, subtitles, bullets), reduced heading size for single-line titles. About section copy trimmed. Hero foreground layer 50% larger on mobile. |
 | v1.9 | Section reorder - About moved to below Hero. Services simplified to title + subtitle only (removed bullet points). Powered By logos moved to after Work section. About heading typography improved with line breaks. |
-| v2.0 | Direct video linking - Use `?video=<slug>` URL parameter to link directly to specific videos. Page auto-scrolls to Work section and opens video modal. Added unique slugs to all 19 videos. |
+| v2.0 | Direct video linking - Use `?video=<slug>` URL parameter to link directly to specific videos. Page auto-scrolls to Work section and opens video modal. Browser URL updates when opening/closing videos, enabling copy/paste sharing from address bar. Added unique slugs to all 19 videos. |
