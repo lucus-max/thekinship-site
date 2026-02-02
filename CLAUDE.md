@@ -82,6 +82,7 @@ thekinship-site/
 3. Update `components/Showcase.tsx` with new video entry:
    ```typescript
    {
+     slug: 'video-slug',  // URL-friendly identifier for direct linking
      title: 'VIDEO TITLE',
      subtitle: 'Role/Credits',
      description: 'Production Company',
@@ -231,27 +232,32 @@ thekinship-site/
 
 ## 9. Current Videos (19 total)
 
-| Title | File |
-|-------|------|
-| VFX Showreel | Showreel_2025_Exported.mp4 |
-| AI Launch Film | ai-film.mp4 |
-| Nissan Campaign | nissan.mp4 |
-| Volvo ES90 | volvo-es90.mp4 |
-| Nissan The Drop | nissan-the-drop.mp4 |
-| Sky F1 Titles | sky-f1-2023.mp4 |
-| Seat Idents | seat-idents.mp4 |
-| Three Phones Are Good | three-phones-are-good.mp4 |
-| Stormzy Toxic Trait | stormzy-toxic-trait.mp4 |
-| Lego Titan | lego-titan.mp4 |
-| Deliveroo Ultimate Gift | deliveroo-ultimate-gift.mp4 |
-| Google Pixel | google-pixel.mp4 |
-| Lions Series Titles | lions-series-2021.mp4 |
-| Legoland Mythica | legoland-mythica.mp4 |
-| EE Gamer | ee-gamer.mp4 |
-| Cadburys Fingers | cadburys-fingers.mp4 |
-| Nike KDI | nike-kdi.mp4 |
-| VW GTE | vw-gte.mp4 |
-| Three Make It Right | three-make-it-right.mp4 |
+### Direct Video Links
+Use `?video=<slug>` to link directly to a video. Page scrolls to Work section and auto-opens modal.
+
+**Example:** `https://thekinship.ai/?video=sky-f1`
+
+| Title | Slug | File |
+|-------|------|------|
+| VFX Showreel | `vfx-showreel` | Showreel_2025_Exported.mp4 |
+| AI Launch Film | `ai-launch-film` | ai-film.mp4 |
+| Nissan Campaign | `nissan-campaign` | nissan.mp4 |
+| Volvo ES90 | `volvo-es90` | volvo-es90.mp4 |
+| Nissan The Drop | `nissan-the-drop` | nissan-the-drop.mp4 |
+| Sky F1 Titles | `sky-f1` | sky-f1-2023.mp4 |
+| Seat Idents | `seat-idents` | seat-idents.mp4 |
+| Three Phones Are Good | `three-phones-are-good` | three-phones-are-good.mp4 |
+| Stormzy Toxic Trait | `stormzy-toxic-trait` | stormzy-toxic-trait.mp4 |
+| Lego Titan | `lego-titan` | lego-titan.mp4 |
+| Deliveroo Ultimate Gift | `deliveroo-ultimate-gift` | deliveroo-ultimate-gift.mp4 |
+| Google Pixel | `google-pixel` | google-pixel.mp4 |
+| Lions Series Titles | `lions-series` | lions-series-2021.mp4 |
+| Legoland Mythica | `legoland-mythica` | legoland-mythica.mp4 |
+| EE Gamer | `ee-gamer` | ee-gamer.mp4 |
+| Cadburys Fingers | `cadburys-fingers` | cadburys-fingers.mp4 |
+| Nike KDI | `nike-kdi` | nike-kdi.mp4 |
+| VW GTE | `vw-gte` | vw-gte.mp4 |
+| Three Make It Right | `three-make-it-right` | three-make-it-right.mp4 |
 
 ## 10. Quick Commands
 
@@ -311,3 +317,4 @@ ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 -q:v 2 thumbnail.jpg
 | v1.7 | Logo wireframe constellation - cursor-reveal wireframe traces logo letters, connects to animated constellation stars. Navigation title 30% smaller. Services center-justified on desktop with bookend bullets. Reduced section gaps. Video grid: distance-based brightness/z falloff (smooth circle effect), 30% increased z-movement, gold border follows animation. Constellation opacity reduced 20%. |
 | v1.8 | Services redesign - replaced long descriptions with short subtitles, left-aligned all content (headings, subtitles, bullets), reduced heading size for single-line titles. About section copy trimmed. Hero foreground layer 50% larger on mobile. |
 | v1.9 | Section reorder - About moved to below Hero. Services simplified to title + subtitle only (removed bullet points). Powered By logos moved to after Work section. About heading typography improved with line breaks. |
+| v2.0 | Direct video linking - Use `?video=<slug>` URL parameter to link directly to specific videos. Page auto-scrolls to Work section and opens video modal. Added unique slugs to all 19 videos. |

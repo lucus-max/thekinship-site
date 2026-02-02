@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
 import Showcase from '@/components/Showcase'
@@ -13,7 +14,9 @@ export default function Home() {
       <Hero />
       <About />
       <Services />
-      <Showcase />
+      <Suspense fallback={null}>
+        <Showcase />
+      </Suspense>
       <Contact />
       <Footer />
     </main>

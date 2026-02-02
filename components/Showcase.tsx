@@ -2,6 +2,7 @@
 
 import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence, useScroll } from 'framer-motion'
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { scrollReveal, spring, staggerContainer, staggerItem } from '@/lib/motion'
 import Image from 'next/image'
 
@@ -47,6 +48,7 @@ function getAdjacentIndices(index: number, totalCount: number, columns: number):
 
 const projects = [
   {
+    slug: 'vfx-showreel',
     title: 'VFX SHOWREEL',
     subtitle: '25 Years of Craft',
     description: 'A foundation of creative direction, VFX supervision, compositing and design across commercials and branded content.',
@@ -55,6 +57,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/Showreel_2025_Exported.mp4',
   },
   {
+    slug: 'ai-launch-film',
     title: 'AI LAUNCH FILM',
     subtitle: 'The Future, Rendered Locally',
     description: 'We are still cavemen in this new age. A short piece generated locally at 2K resolution using ethical, open-source AI models.',
@@ -63,6 +66,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/ai-film.mp4',
   },
   {
+    slug: 'nissan-campaign',
     title: 'NISSAN CAMPAIGN',
     subtitle: 'From Still to Motion',
     description: 'A complete workflow demonstration: starting from a single product image, employing the latest AI and ML tools to deliver full video content.',
@@ -71,6 +75,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/nissan.mp4',
   },
   {
+    slug: 'volvo-es90',
     title: 'VOLVO ES90',
     subtitle: 'VFX Supervision, Creative Direction',
     description: 'Coffee & TV',
@@ -79,6 +84,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/volvo-es90.mp4',
   },
   {
+    slug: 'nissan-the-drop',
     title: 'NISSAN THE DROP',
     subtitle: 'Shoot Director, Creative Direction',
     description: 'Coffee & TV',
@@ -87,6 +93,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/nissan-the-drop.mp4',
   },
   {
+    slug: 'sky-f1',
     title: 'SKY F1 TITLES',
     subtitle: 'VFX Supervision, co-Creative Direction',
     description: 'Coffee & TV',
@@ -95,6 +102,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/sky-f1-2023.mp4',
   },
   {
+    slug: 'seat-idents',
     title: 'SEAT IDENTS',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Time Based Arts',
@@ -103,6 +111,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/seat-idents.mp4',
   },
   {
+    slug: 'three-phones-are-good',
     title: 'THREE PHONES ARE GOOD',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Time Based Arts',
@@ -111,6 +120,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/three-phones-are-good.mp4',
   },
   {
+    slug: 'stormzy-toxic-trait',
     title: 'STORMZY TOXIC TRAIT',
     subtitle: 'VFX Supervision, Creative Direction',
     description: 'Coffee & TV',
@@ -119,6 +129,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/stormzy-toxic-trait.mp4',
   },
   {
+    slug: 'lego-titan',
     title: 'LEGO TITAN',
     subtitle: 'VFX Supervision, Creative Direction',
     description: 'Coffee & TV',
@@ -127,6 +138,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/lego-titan.mp4',
   },
   {
+    slug: 'deliveroo-ultimate-gift',
     title: 'DELIVEROO THE ULTIMATE GIFT',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Coffee & TV',
@@ -135,6 +147,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/deliveroo-ultimate-gift.mp4',
   },
   {
+    slug: 'google-pixel',
     title: 'GOOGLE PIXEL',
     subtitle: 'VFX Supervision, Creative Direction',
     description: 'Coffee & TV',
@@ -143,6 +156,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/google-pixel.mp4',
   },
   {
+    slug: 'lions-series',
     title: 'LIONS SERIES TITLES',
     subtitle: 'Lead Comp',
     description: 'Coffee & TV',
@@ -151,6 +165,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/lions-series-2021.mp4',
   },
   {
+    slug: 'legoland-mythica',
     title: 'LEGOLAND MYTHICA',
     subtitle: 'VFX Supervision, Creative Direction',
     description: 'Coffee & TV',
@@ -159,6 +174,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/legoland-mythica.mp4',
   },
   {
+    slug: 'ee-gamer',
     title: 'EE GAMER',
     subtitle: 'VFX Supervision, Creative Direction',
     description: 'Coffee & TV',
@@ -167,6 +183,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/ee-gamer.mp4',
   },
   {
+    slug: 'cadburys-fingers',
     title: 'CADBURYS FINGERS',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Time Based Arts',
@@ -175,6 +192,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/cadburys-fingers.mp4',
   },
   {
+    slug: 'nike-kdi',
     title: 'NIKE KDI',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Time based Arts',
@@ -183,6 +201,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/nike-kdi.mp4',
   },
   {
+    slug: 'vw-gte',
     title: 'VW GTE',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Time based Arts',
@@ -191,6 +210,7 @@ const projects = [
     video: 'https://pub-5b43fd3787f84e3da4a241819cb889ab.r2.dev/vw-gte.mp4',
   },
   {
+    slug: 'three-make-it-right',
     title: 'THREE MAKE IT RIGHT',
     subtitle: 'VFX Supervision, Lead Comp',
     description: 'Time Based Arts',
@@ -518,6 +538,28 @@ export default function Showcase() {
   const [grid2Cols, setGrid2Cols] = useState(4)
   const [mobileOpacities, setMobileOpacities] = useState<number[]>(new Array(projects.length).fill(1))
   const [mobileZValues, setMobileZValues] = useState<number[]>(new Array(projects.length).fill(0))
+
+  // URL-based video linking
+  const searchParams = useSearchParams()
+
+  // Check for ?video= parameter on mount and open matching video
+  useEffect(() => {
+    const videoSlug = searchParams.get('video')
+    if (videoSlug) {
+      const matchedProject = projects.find(p => p.slug === videoSlug)
+      if (matchedProject) {
+        // Scroll to work section first
+        const workSection = document.getElementById('work')
+        if (workSection) {
+          workSection.scrollIntoView({ behavior: 'smooth' })
+        }
+        // Open modal after a brief delay to allow scroll
+        setTimeout(() => {
+          setActiveVideo(matchedProject.video)
+        }, 500)
+      }
+    }
+  }, [searchParams])
 
   // Scroll tracking for mobile opacity gradient
   const { scrollY } = useScroll()
