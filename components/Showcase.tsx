@@ -542,6 +542,21 @@ export default function Showcase() {
   // URL-based video linking
   const searchParams = useSearchParams()
 
+  // Open video and update URL
+  const openVideo = useCallback((videoUrl: string) => {
+    const project = projects.find(p => p.video === videoUrl)
+    if (project) {
+      setActiveVideo(videoUrl)
+      window.history.pushState({}, '', `?video=${project.slug}`)
+    }
+  }, [])
+
+  // Close video and restore URL
+  const closeVideo = useCallback(() => {
+    setActiveVideo(null)
+    window.history.pushState({}, '', window.location.pathname)
+  }, [])
+
   // Check for ?video= parameter on mount and open matching video
   useEffect(() => {
     const videoSlug = searchParams.get('video')
@@ -774,7 +789,7 @@ export default function Showcase() {
                       filter: `brightness(${tileBrightness})`,
                     }}
                     transition={{ duration: 0.15, ease: "easeOut" }}
-                    onClick={() => setActiveVideo(project.video)}
+                    onClick={() => openVideo(project.video)}
                     onMouseEnter={() => {
                       if (!isMobile) {
                         setHoveredIndex(index)
@@ -860,7 +875,7 @@ export default function Showcase() {
                       filter: `brightness(${tileBrightness})`,
                     }}
                     transition={{ duration: 0.15, ease: "easeOut" }}
-                    onClick={() => setActiveVideo(project.video)}
+                    onClick={() => openVideo(project.video)}
                     onMouseEnter={() => {
                       if (!isMobile) {
                         setHoveredIndex(globalIndex)
@@ -953,7 +968,7 @@ export default function Showcase() {
       <VideoModal
         video={activeVideo || ''}
         isOpen={!!activeVideo}
-        onClose={() => setActiveVideo(null)}
+        onClose={closeVideo}
       />
     </>
   )
